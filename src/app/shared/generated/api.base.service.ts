@@ -1,5 +1,5 @@
 /**
- * onecx-document-management-ui-bff
+ * document-management
  *
  * 
  *

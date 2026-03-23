@@ -20,6 +20,7 @@ import {
   ConfigurationService,
   createTranslateLoader,
   PortalCoreModule,
+  providePortalDialogService,
   translateServiceInitializer,
   UserService,
 } from '@onecx/portal-integration-angular';
@@ -64,6 +65,7 @@ export const commonImports = [CommonModule];
     }),
   ],
   providers: [
+    providePortalDialogService(),
     { provide: APP_CONFIG, useValue: environment },
     {
       provide: Configuration,

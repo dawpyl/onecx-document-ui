@@ -1,16 +1,14 @@
----
 openapi: 3.0.3
 info:
   title: document-management
   description: 1000kit document management
-  version: "1.0"
+  version: '1.0'
 tags:
   - name: DocumentControllerV1
   - name: DocumentSpecificationControllerV1
   - name: DocumentTypeControllerV1
   - name: FileControllerV1
   - name: SupportedMimeTypeControllerV1
-
 paths:
   /document:
     post:
@@ -28,7 +26,7 @@ paths:
             schema:
               $ref: '#/components/schemas/DocumentCreateUpdate'
       responses:
-        "201":
+        '201':
           description: Created Document resource
           headers:
             Location:
@@ -40,7 +38,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DocumentDetail'
-        "400":
+        '400':
           description: Bad Request
           content:
             application/json:
@@ -62,13 +60,13 @@ paths:
             schema:
               $ref: '#/components/schemas/DocumentSearchCriteria'
       responses:
-        "200":
+        '200':
           description: The corresponding documents resource
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/PageResult'
-        "400":
+        '400':
           description: Bad Request
           content:
             application/json:
@@ -85,7 +83,7 @@ paths:
       description: Finds all specification of documents
       operationId: getAllDocumentSpecifications
       responses:
-        "200":
+        '200':
           description: Found all specification of documents
           content:
             application/json:
@@ -93,7 +91,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/DocumentSpecification'
-        "404":
+        '404':
           description: Not found
           content:
             application/json:
@@ -114,13 +112,13 @@ paths:
             schema:
               $ref: '#/components/schemas/DocumentSpecificationCreateUpdate'
       responses:
-        "201":
+        '201':
           description: Created specification of document
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/DocumentSpecification'
-        "404":
+        '404':
           description: Not found
           content:
             application/json:
@@ -143,13 +141,13 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: Ok
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/DocumentSpecification'
-        "404":
+        '404':
           description: Not found
           content:
             application/json:
@@ -176,13 +174,13 @@ paths:
             schema:
               $ref: '#/components/schemas/DocumentSpecificationCreateUpdate'
       responses:
-        "200":
+        '200':
           description: Updated specification of document by id
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/DocumentSpecification'
-        "404":
+        '404':
           description: Not found
           content:
             application/json:
@@ -204,15 +202,15 @@ paths:
           schema:
             type: string
       responses:
-        "204":
+        '204':
           description: Deleted specification of document by id
-        "400":
+        '400':
           description: Bad request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/RFCProblem'
-        "404":
+        '404':
           description: Not found
           content:
             application/json:
@@ -229,7 +227,7 @@ paths:
       description: Finds all types of document
       operationId: getAllTypesOfDocument
       responses:
-        "200":
+        '200':
           description: Found all types of document
           content:
             application/json:
@@ -237,7 +235,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/DocumentType'
-        "404":
+        '404':
           description: Not found
           content:
             application/json:
@@ -258,13 +256,13 @@ paths:
             schema:
               $ref: '#/components/schemas/DocumentTypeCreateUpdate'
       responses:
-        "201":
+        '201':
           description: Created type of document
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/DocumentType'
-        "404":
+        '404':
           description: Not found
           content:
             application/json:
@@ -287,13 +285,13 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: Ok
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/DocumentType'
-        "404":
+        '404':
           description: Not found
           content:
             application/json:
@@ -320,13 +318,13 @@ paths:
             schema:
               $ref: '#/components/schemas/DocumentTypeCreateUpdate'
       responses:
-        "201":
+        '201':
           description: Updated type of document by id
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/DocumentType'
-        "404":
+        '404':
           description: Not found
           content:
             application/json:
@@ -348,15 +346,15 @@ paths:
           schema:
             type: string
       responses:
-        "204":
+        '204':
           description: Deleted type of document by id
-        "400":
+        '400':
           description: Bad request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/RFCProblem'
-        "404":
+        '404':
           description: Not found
           content:
             application/json:
@@ -380,7 +378,7 @@ paths:
               items:
                 $ref: '#/components/schemas/DocumentCreateUpdate'
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -388,7 +386,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/DocumentDetail'
-        "404":
+        '404':
           description: Not found
           content:
             application/json:
@@ -405,7 +403,7 @@ paths:
       description: Gets all channels
       operationId: getAllChannels
       responses:
-        "200":
+        '200':
           description: Ok
           content:
             application/json:
@@ -431,9 +429,9 @@ paths:
               items:
                 type: string
       responses:
-        "204":
+        '204':
           description: Delete Documents by ids
-        "404":
+        '404':
           description: Not found
           content:
             application/json:
@@ -457,9 +455,9 @@ paths:
               items:
                 type: string
       responses:
-        "204":
+        '204':
           description: No Content
-        "404":
+        '404':
           description: Not found
   /document/file/{attachmentId}:
     get:
@@ -478,20 +476,20 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AttachmentPresignedUrlResponse'
-        "404":
-          description: Not found
+        '400':
+          description: Bad request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetailResponse'
-        "400":
-          description: Bad request
+        '404':
+          description: Not found
           content:
             application/json:
               schema:
@@ -517,17 +515,17 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/octet-stream:
               schema:
                 format: binary
                 type: string
-        "400":
-          description: Bad request
-        "204":
+        '204':
           description: No content
+        '400':
+          description: Bad request
   /document/{documentId}/files/metadata:
     patch:
       x-onecx:
@@ -550,9 +548,9 @@ paths:
             schema:
               type: array
               items:
-                $ref: "#/components/schemas/UpdateFileMetadataRequest"
+                $ref: '#/components/schemas/UpdateFileMetadataRequest'
       responses:
-        "200":
+        '200':
           description: Metadata updated
   /document/{documentId}/files/audit-log:
     patch:
@@ -576,9 +574,9 @@ paths:
             schema:
               type: array
               items:
-                $ref: "#/components/schemas/UpdateFileMetadataRequest"
+                $ref: '#/components/schemas/UpdateFileMetadataRequest'
       responses:
-        "201":
+        '201':
           description: Audit logs created
   /document/files/upload/failed/{id}:
     get:
@@ -597,7 +595,7 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -605,7 +603,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/StorageUploadAudit'
-        "404":
+        '404':
           description: Not found
           content:
             application/json:
@@ -625,9 +623,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/DocumentSearchCriteria"
+              $ref: '#/components/schemas/DocumentSearchCriteria'
       responses:
-        "200":
+        '200':
           description: The corresponding documents resource
           content:
             application/json:
@@ -635,7 +633,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/DocumentDetail'
-        "400":
+        '400':
           description: Bad Request
           content:
             application/json:
@@ -658,13 +656,13 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: Ok
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/DocumentDetail'
-        "404":
+        '404':
           description: Not found
           content:
             application/json:
@@ -691,13 +689,13 @@ paths:
             schema:
               $ref: '#/components/schemas/DocumentCreateUpdate'
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/DocumentDetail'
-        "404":
+        '404':
           description: Not found
           content:
             application/json:
@@ -719,9 +717,9 @@ paths:
           schema:
             type: string
       responses:
-        "204":
+        '204':
           description: Deleted Document by id
-        "404":
+        '404':
           description: Not found
           content:
             application/json:
@@ -745,9 +743,9 @@ paths:
           schema:
             type: string
       responses:
-        "201":
+        '201':
           description: Created
-        "400":
+        '400':
           description: Bad request
   /files/{bucket}/{path}:
     get:
@@ -769,17 +767,17 @@ paths:
           in: path
           required: true
           schema:
-            pattern: '.+'
+            pattern: .+
             type: string
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/octet-stream:
               schema:
                 format: binary
                 type: string
-        "404":
+        '404':
           description: Not found
     put:
       x-onecx:
@@ -809,9 +807,9 @@ paths:
             schema:
               $ref: '#/components/schemas/FileMultipartBody'
       responses:
-        "201":
+        '201':
           description: Created
-        "400":
+        '400':
           description: Bad request
     delete:
       x-onecx:
@@ -836,9 +834,9 @@ paths:
             pattern: .+
             type: string
       responses:
-        "201":
+        '201':
           description: File Deleted
-        "404":
+        '404':
           description: Not Found
   /supported-mime-type:
     get:
@@ -851,7 +849,7 @@ paths:
       description: Finds all supported mime-types
       operationId: getAllSupportedMimeTypes
       responses:
-        "200":
+        '200':
           description: Found all supported mime-types
           content:
             application/json:
@@ -859,7 +857,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/SupportedMimeType'
-        "404":
+        '404':
           description: Not found
           content:
             application/json:
@@ -880,13 +878,13 @@ paths:
             schema:
               $ref: '#/components/schemas/SupportedMimeTypeCreateUpdate'
       responses:
-        "201":
+        '201':
           description: Created supported mime-type
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/SupportedMimeType'
-        "404":
+        '404':
           description: Not found
           content:
             application/json:
@@ -909,13 +907,13 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: Ok
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/SupportedMimeType'
-        "404":
+        '404':
           description: Not found
           content:
             application/json:
@@ -942,13 +940,13 @@ paths:
             schema:
               $ref: '#/components/schemas/SupportedMimeTypeCreateUpdate'
       responses:
-        "200":
+        '200':
           description: Updated supported mime-type by id
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/SupportedMimeType'
-        "404":
+        '404':
           description: Not found
           content:
             application/json:
@@ -970,15 +968,15 @@ paths:
           schema:
             type: string
       responses:
-        "204":
+        '204':
           description: Deleted supported mime-type by id
-        "400":
+        '400':
           description: Bad request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/RFCProblem'
-        "404":
+        '404':
           description: Not found
           content:
             application/json:
@@ -1753,7 +1751,6 @@ components:
         lastModifiedDate:
           type: string
           format: date-time
-
     DocumentResponse:
       allOf:
         - $ref: '#/components/schemas/Traceable'

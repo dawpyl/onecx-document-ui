@@ -1,4 +1,48 @@
 {
+  "DOCUMENT_SEARCH": {
+    "HEADER": "Document Search",
+    "SUB_HEADER": "Searching and displaying of Document",
+    "HELP_ARTICLE_ID": "Help Article",
+    "EMPTY_RESULTS": "No results.",
+    "BREADCRUMB": "Search",
+    "DIAGRAM": {
+      "SUM": "Total",
+      "NAME": "Diagram for Search Results"
+    },
+    "HEADER_ACTIONS": {
+      "EXPORT_ALL": "Export all",
+      "SHOW_CHART": "Show chart",
+      "HIDE_CHART": "Hide chart",
+      "CREATE_SEARCH_CONFIG": "Create search configuration",
+      "UPDATE_SEARCH_CONFIG": "Update search configuration",
+      "DIALOG_CONFIRM": "Confirm",
+      "DIALOG_CANCEL": "Cancel"
+    },
+    "ERROR_MESSAGES": {
+      "SEARCH_RESULTS_LOADING_FAILED": "Loading search results failed.",
+      "SEARCH_CONFIG_CREATION_FAILED": "Create search configuration failed.",
+      "SEARCH_CONFIG_UPDATE_FAILED": "Update search configuration failed.",
+      "SEARCH_CONFIGS_LOADING_FAILED": "Loading search configurations failed."
+    },
+    "ARIA-LABEL": "Page Header with Search",
+    "PREDEFINED_GROUP": {
+      "DEFAULT": "Default",
+      "EXTENDED": "Extended",
+      "FULL": "Full"
+    },
+    "RESULTS": {
+      "CHANGE_ME": "Change Me",
+      "NAME": "Search Results"
+    },
+    "CRITERIA": {
+      "INPUT_FIELDS": "ACTION S4: ADD TRANSLATION for your input fields: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/search-criteria.html#action-4",
+      "CHANGE_ME": {
+        "LABEL": "Change Me",
+        "ARIA-LABEL": "Change Me",
+        "TOOLTIP": "Change Me"
+      }
+    }
+  },
   "OnecxDocumentManagementUi": {
     "ARIA-LABEL": "OnecxDocumentManagementUi App"
   }

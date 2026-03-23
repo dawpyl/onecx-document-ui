@@ -12,9 +12,11 @@ import { CalendarModule } from 'primeng/calendar';
 import { SharedModule } from '../shared/shared.module';
 import { documentFeature } from './document.reducers';
 import { routes } from './document.routes';
+import { DocumentSearchComponent } from './pages/document-search/document-search.component';
+import { DocumentSearchEffects } from './pages/document-search/document-search.effects';
 
 @NgModule({
-  declarations: [],
+  declarations: [DocumentSearchComponent],
   imports: [
     CommonModule,
     SharedModule,
@@ -25,7 +27,7 @@ import { routes } from './document.routes';
     ReactiveFormsModule,
     CalendarModule,
     StoreModule.forFeature(documentFeature),
-    EffectsModule.forFeature(),
+    EffectsModule.forFeature([DocumentSearchEffects]),
     TranslateModule,
   ],
 })

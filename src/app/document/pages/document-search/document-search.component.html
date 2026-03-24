@@ -3,7 +3,9 @@
   [helpArticleId]="'DOCUMENT_SEARCH.HELP_ARTICLE_ID' | translate"
   *ngrxLet="viewModel$; let vm"
 >
+  <ocx-loading-indicator *ngIf="vm.searchLoadingIndicator"></ocx-loading-indicator>
   <ocx-search-header
+    ocxAdvanced
     [headline]="'DOCUMENT_SEARCH.HEADER' | translate"
     [subheader]="'DOCUMENT_SEARCH.SUB_HEADER' | translate"
     (searched)="search(documentSearchFormGroup)"
@@ -14,37 +16,13 @@
     [viewMode]="vm.searchHeaderComponentState?.activeViewMode ?? 'basic'"
     [attr.aria-label]="'DOCUMENT_SEARCH.ARIA-LABEL' | translate"
   >
-    <form [formGroup]="documentSearchFormGroup">
-      <div class="grid mt-0 p-fluid">
-        <div class="col-12 md:col-3">
-          <span class="p-float-label">
-            <!-- <input
-              pInputText
-              id="changeMe"
-              type="text"
-              class="w-18rem"
-              formControlName="changeMe"
-              [pTooltip]="
-                'DOCUMENT_SEARCH.CRITERIA.CHANGE_ME.TOOLTIP' | translate
-              "
-              tooltipPosition="top"
-              tooltipEvent="hover"
-              role="main"
-              [attr.aria-label]="
-                'DOCUMENT_SEARCH.CRITERIA.CHANGE_ME.ARIA-LABEL' | translate
-              "
-            />
-            <label for="changeMe" style="white-space: nowrap">
-              {{
-                'DOCUMENT_SEARCH.CRITERIA.CHANGE_ME.LABEL' | translate
-              }}</label
-            > -->
-          </span>
-        </div>
-      </div>
-      <!--// ACTION S3: Specify here your desired search criterias:
-       https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/search-criteria.html#action-3 -->
-    </form>
+    <app-document-search-criteria
+      [formGroup]="documentSearchFormGroup"
+      [viewMode]="vm.searchHeaderComponentState?.activeViewMode ?? 'basic'"
+      [availableDocumentTypes]="vm.availableDocumentTypes"
+      [availableChannels]="vm.avilableChannels"
+      [lifeCycleStates]="lifeCycleStates"
+    ></app-document-search-criteria>
   </ocx-search-header>
   <ocx-content-container layout="horizontal">
     <ocx-content class="w-full">
@@ -53,7 +31,7 @@
         [columns]="vm.columns"
         [emptyResultsMessage]="'DOCUMENT_SEARCH.EMPTY_RESULTS' | translate"
         (componentStateChanged)="resultComponentStateChanged($event)"
-        [layout]="vm.resultComponentState?.layout ?? 'list'"
+        [layout]="vm.resultComponentState?.layout ?? 'table'"
         [displayedColumns]="vm.resultComponentState?.displayedColumns ?? []"
         [supportedViewLayouts]="['list', 'table']"
         [page]="vm.resultComponentState?.activePage ?? 0"
@@ -75,28 +53,6 @@
         [attr.aria-label]="'DOCUMENT_SEARCH.RESULTS.NAME' | translate"
       >
       </ocx-interactive-data-view>
-    </ocx-content>
-    <ocx-content
-      class="w-full lg:w-3"
-      *ngIf="
-        vm.results.length > 0 && vm.chartVisible && (diagramColumn$ | async)
-      "
-    >
-      <div
-        class="flex flex-column md:flex-row lg:flex-column justify-content-center"
-      >
-        <ocx-group-by-count-diagram
-          *ngIf="diagramColumn$ | async as diagramColumn"
-          [data]="vm.results"
-          [column]="diagramColumn"
-          sumKey="DOCUMENT_SEARCH.DIAGRAM.SUM"
-          [diagramType]="
-            vm.diagramComponentState?.activeDiagramType ?? defaultDiagramType
-          "
-          (componentStateChanged)="diagramComponentStateChanged($event)"
-          [attr.aria-label]="'DOCUMENT_SEARCH.DIAGRAM.NAME' | translate"
-        ></ocx-group-by-count-diagram>
-      </div>
     </ocx-content>
   </ocx-content-container>
 </ocx-portal-page>

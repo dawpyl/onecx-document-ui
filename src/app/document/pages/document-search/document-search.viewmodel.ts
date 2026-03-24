@@ -6,6 +6,7 @@ import {
   SearchHeaderComponentState,
 } from '@onecx/portal-integration-angular';
 import { DocumentSearchCriteriaSchema } from './document-search.parameters';
+import { SelectItem } from 'primeng/api';
 
 export interface DocumentSearchViewModel {
   columns: DataTableColumn[];
@@ -17,4 +18,7 @@ export interface DocumentSearchViewModel {
   chartVisible: boolean;
   searchLoadingIndicator: boolean;
   searchExecuted: boolean;
+  criteriaOptionsLoaded: boolean;
+  availableDocumentTypes: SelectItem[];
+  avilableChannels: SelectItem[];
 }

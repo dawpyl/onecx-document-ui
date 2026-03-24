@@ -9,14 +9,17 @@ import { TranslateModule } from '@ngx-translate/core';
 import { addInitializeModuleGuard } from '@onecx/angular-integration-interface';
 import { PortalCoreModule } from '@onecx/portal-integration-angular';
 import { CalendarModule } from 'primeng/calendar';
+import { DropdownModule } from 'primeng/dropdown';
+import { MultiSelectModule } from 'primeng/multiselect';
 import { SharedModule } from '../shared/shared.module';
 import { documentFeature } from './document.reducers';
 import { routes } from './document.routes';
 import { DocumentSearchComponent } from './pages/document-search/document-search.component';
+import { DocumentSearchCriteriaComponent } from './pages/document-search/components/document-search-criteria/document-search-criteria.component';
 import { DocumentSearchEffects } from './pages/document-search/document-search.effects';
 
 @NgModule({
-  declarations: [DocumentSearchComponent],
+  declarations: [DocumentSearchComponent, DocumentSearchCriteriaComponent],
   imports: [
     CommonModule,
     SharedModule,
@@ -26,6 +29,8 @@ import { DocumentSearchEffects } from './pages/document-search/document-search.e
     FormsModule,
     ReactiveFormsModule,
     CalendarModule,
+    DropdownModule,
+    MultiSelectModule,
     StoreModule.forFeature(documentFeature),
     EffectsModule.forFeature([DocumentSearchEffects]),
     TranslateModule,

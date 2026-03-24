@@ -3,8 +3,7 @@ import {
   Inject,
   LOCALE_ID,
   OnInit,
-  QueryList,
-  ViewChildren,
+  ViewChild,
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
@@ -20,9 +19,9 @@ import {
   InteractiveDataViewComponentState,
   SearchHeaderComponentState,
 } from '@onecx/portal-integration-angular';
-import { PrimeIcons } from 'primeng/api';
-import { Calendar } from 'primeng/calendar';
+import { PrimeIcons, SelectItem } from 'primeng/api';
 import { map, Observable } from 'rxjs';
+import { DocumentSearchCriteriaComponent } from './components/document-search-criteria/document-search-criteria.component';
 import { DocumentSearchActions } from './document-search.actions';
 import {
   DocumentSearchCriteriaSchema,
@@ -30,6 +29,7 @@ import {
 } from './document-search.parameters';
 import { selectDocumentSearchViewModel } from './document-search.selectors';
 import { DocumentSearchViewModel } from './document-search.viewmodel';
+import { LifeCycleState } from 'src/app/shared/generated';
 
 @Component({
   selector: 'app-document-search',
@@ -37,55 +37,13 @@ import { DocumentSearchViewModel } from './document-search.viewmodel';
   styleUrls: ['./document-search.component.scss'],
 })
 export class DocumentSearchComponent implements OnInit {
-  @ViewChildren(Calendar) calendars!: QueryList<Calendar>;
-  viewModel$: Observable<DocumentSearchViewModel> = this.store.select(
-    selectDocumentSearchViewModel
-  );
+  @ViewChild(DocumentSearchCriteriaComponent) criteriaComponent!: DocumentSearchCriteriaComponent;
 
-  defaultDataSortDirection = DataSortDirection.NONE;
-  defaultDiagramType = DiagramType.PIE;
-
-  // ACTION S10: Update header actions: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/update-header-actions.html#action-10
-  headerActions$: Observable<Action[]> = this.viewModel$.pipe(
-    map((vm) => {
-      const actions: Action[] = [
-        {
-          labelKey: 'DOCUMENT_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
-          icon: PrimeIcons.DOWNLOAD,
-          titleKey: 'DOCUMENT_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
-          show: 'asOverflow',
-          actionCallback: () => this.exportItems(),
-        },
-        {
-          labelKey: vm.chartVisible
-            ? 'DOCUMENT_SEARCH.HEADER_ACTIONS.HIDE_CHART'
-            : 'DOCUMENT_SEARCH.HEADER_ACTIONS.SHOW_CHART',
-          icon: PrimeIcons.EYE,
-          titleKey: vm.chartVisible
-            ? 'DOCUMENT_SEARCH.HEADER_ACTIONS.HIDE_CHART'
-            : 'DOCUMENT_SEARCH.HEADER_ACTIONS.SHOW_CHART',
-          show: 'asOverflow',
-          actionCallback: () => this.toggleChartVisibility(),
-        },
-      ];
-      return actions;
-    })
-  );
-
-  // ACTION S9: Select the column to be displayed in the diagram: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/configure-result-diagram.html#action-3
-  diagramColumnId = 'id';
-  diagramColumn$ = this.viewModel$.pipe(
-    map(
-      (vm) =>
-        vm.columns.find((e) => e.id === this.diagramColumnId) as DataTableColumn
-    )
-  );
-
-  public documentSearchFormGroup: FormGroup = this.formBuilder.group({
-    ...(Object.fromEntries(
-      documentSearchCriteriasSchema.keyof().options.map((k) => [k, null])
-    ) as Record<keyof DocumentSearchCriteriaSchema, unknown>),
-  } satisfies Record<keyof DocumentSearchCriteriaSchema, unknown>);
+  viewModel$: Observable<DocumentSearchViewModel>;
+  defaultDataSortDirection: DataSortDirection;
+  headerActions$: Observable<Action[]>;
+  lifeCycleStates: SelectItem[];
+  public documentSearchFormGroup: FormGroup;
 
   constructor(
     private readonly breadcrumbService: BreadcrumbService,
@@ -93,7 +51,13 @@ export class DocumentSearchComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     @Inject(LOCALE_ID) public readonly locale: string,
     private readonly exportDataService: ExportDataService
-  ) {}
+  ) {
+    this.viewModel$ = this.store.select(selectDocumentSearchViewModel);
+    this.defaultDataSortDirection = DataSortDirection.NONE;
+    this.headerActions$ = this.buildHeaderActions();
+    this.lifeCycleStates = this.buildLifeCycleStates();
+    this.documentSearchFormGroup = this.buildSearchFormGroup();
+  }
 
   ngOnInit() {
     this.breadcrumbService.setItems([
@@ -104,10 +68,8 @@ export class DocumentSearchComponent implements OnInit {
       },
     ]);
     this.viewModel$.subscribe((vm) => {
-      console.log(vm)
-      this.documentSearchFormGroup.patchValue(vm.searchCriteria)
-    }
-    );
+      this.documentSearchFormGroup.patchValue(vm.searchCriteria);
+    });
   }
 
   resultComponentStateChanged(state: InteractiveDataViewComponentState) {
@@ -122,16 +84,10 @@ export class DocumentSearchComponent implements OnInit {
     );
   }
 
-  diagramComponentStateChanged(state: DiagramComponentState) {
-    this.store.dispatch(
-      DocumentSearchActions.diagramComponentStateChanged(state)
-    );
-  }
-
   search(formValue: FormGroup) {
     const searchCriteria = buildSearchCriteria(
       formValue.getRawValue(),
-      this.calendars,
+      this.criteriaComponent.calendars,
       { removeNullValues: true }
     );
     this.store.dispatch(
@@ -140,14 +96,55 @@ export class DocumentSearchComponent implements OnInit {
   }
 
   resetSearch() {
+    this.documentSearchFormGroup.reset();
     this.store.dispatch(DocumentSearchActions.resetButtonClicked());
   }
+
+  quickUpload() {}
+
+  createNewDocument() {}
 
   exportItems() {
     this.store.dispatch(DocumentSearchActions.exportButtonClicked());
   }
 
-  toggleChartVisibility() {
-    this.store.dispatch(DocumentSearchActions.chartVisibilityToggled());
+  private buildHeaderActions(): Observable<Action[]> {
+    return this.viewModel$.pipe(
+      map(() => [
+        {
+          labelKey: 'DOCUMENT_SEARCH.HEADER_ACTIONS.QUICK_UPLOAD',
+          icon: PrimeIcons.UPLOAD,
+          titleKey: 'DOCUMENT_SEARCH.HEADER_ACTIONS.QUICK_UPLOAD',
+          show: 'always' as const,
+          actionCallback: () => this.quickUpload(),
+        },
+        {
+          labelKey: 'DOCUMENT_SEARCH.HEADER_ACTIONS.CREATE_NEW_DOCUMENT',
+          icon: PrimeIcons.PLUS,
+          titleKey: 'DOCUMENT_SEARCH.HEADER_ACTIONS.CREATE_NEW_DOCUMENT',
+          show: 'always' as const,
+          actionCallback: () => this.createNewDocument(),
+        },
+        {
+          labelKey: 'DOCUMENT_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
+          icon: PrimeIcons.DOWNLOAD,
+          titleKey: 'DOCUMENT_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
+          show: 'asOverflow' as const,
+          actionCallback: () => this.exportItems(),
+        },
+      ])
+    );
+  }
+
+  private buildLifeCycleStates(): SelectItem[] {
+    return Object.keys(LifeCycleState).map((state) => ({ label: state, value: state }));
+  }
+
+  private buildSearchFormGroup(): FormGroup {
+    return this.formBuilder.group({
+      ...(Object.fromEntries(
+        documentSearchCriteriasSchema.keyof().options.map((k) => [k, null])
+      ) as Record<keyof DocumentSearchCriteriaSchema, unknown>),
+    } satisfies Record<keyof DocumentSearchCriteriaSchema, unknown>);
   }
 }

@@ -13,8 +13,8 @@ import {
   PortalMessageService,
 } from '@onecx/portal-integration-angular';
 import equal from 'fast-deep-equal';
-import { catchError, map, of, switchMap, tap } from 'rxjs';
-import { DocumentControllerV1 } from '../../../shared/generated';
+import { catchError, forkJoin, map, mergeMap, Observable, of, switchMap, tap } from 'rxjs';
+import { DocumentControllerV1, DocumentTypeControllerV1 } from '../../../shared/generated';
 import { DocumentSearchActions } from './document-search.actions';
 import { DocumentSearchComponent } from './document-search.component';
 import { documentSearchCriteriasSchema } from './document-search.parameters';
@@ -32,7 +32,8 @@ export class DocumentSearchEffects {
     private router: Router,
     private store: Store,
     private messageService: PortalMessageService,
-    private readonly exportDataService: ExportDataService
+    private readonly exportDataService: ExportDataService,
+    private readonly documentTypeService: DocumentTypeControllerV1
   ) {}
 
   syncParamsToUrl$ = createEffect(
@@ -77,41 +78,42 @@ export class DocumentSearchEffects {
       //   false
       // ),
       concatLatestFrom(() =>
-        this.store.select(documentSearchSelectors.selectCriteria)
+      [this.store.select(documentSearchSelectors.selectCriteria),
+        this.store.select(documentSearchSelectors.selectCriteriaOptionsLoaded)]
       ),
-      switchMap(([, searchCriteria]) => this.performSearch(searchCriteria))
+      map(([, searchCriteria, criteriaOptionsLoaded]) => {
+        if (criteriaOptionsLoaded) {
+          return DocumentSearchActions.performSearch({searchCriteria});
+        }
+        return DocumentSearchActions.loadAvailableCriteriaOptionsAndSearch({criteria: searchCriteria});
+      })
     );
   });
 
-  performSearch(searchCriteria: Record<string, any>) {
-    return this.documentService.getDocumentByCriteria({
-        ...Object.entries(searchCriteria).reduce(
-          (acc, [key, value]) => ({
-            ...acc,
-            [key]: value instanceof Date ? value.toISOString() : value,
-          }),
-          {}
-        ),
+  loadCriteriaOptions$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(DocumentSearchActions.loadAvailableCriteriaOptionsAndSearch),
+      switchMap((action) => forkJoin([
+        this.documentService.getAllChannels(),
+        this.documentTypeService.getAllTypesOfDocument()
+      ]).pipe(
+        mergeMap(([channels, documentTypes]) => [
+          DocumentSearchActions.availableChannelsRecived({channels}),
+          DocumentSearchActions.availableDocTypesRecived({types: documentTypes}),
+          DocumentSearchActions.performSearch({searchCriteria: action.criteria})
+        ])
+      ))
+    )
+  })
+
+  performSearch$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(DocumentSearchActions.performSearch),
+      switchMap((action) => {
+        return this.performSearch(action.searchCriteria)    
       })
-      .pipe(
-        map(({ stream, size, number, totalElements, totalPages }) =>
-          DocumentSearchActions.documentSearchResultsReceived({
-            stream: stream || [],
-            size: size || 0,
-            number: number || 0,
-            totalElements: totalElements || 0,
-            totalPages: totalPages || 0,
-          })
-        ),
-        catchError((error) =>
-          of(
-            DocumentSearchActions.documentSearchResultsLoadingFailed({
-              error,
-            })
-          )
-        )
-      );
-  }
+    )
+  })
 
   exportData$ = createEffect(
     () => {
@@ -154,4 +156,34 @@ export class DocumentSearchEffects {
     },
     { dispatch: false }
   );
+
+  private performSearch(searchCriteria: Record<string, any>) {
+    return this.documentService.getDocumentByCriteria({
+        ...Object.entries(searchCriteria).reduce(
+          (acc, [key, value]) => ({
+            ...acc,
+            [key]: value instanceof Date ? value.toISOString() : value,
+          }),
+          {}
+        ),
+      })
+      .pipe(
+        map(({ stream, size, number, totalElements, totalPages }) =>
+          DocumentSearchActions.documentSearchResultsReceived({
+            stream: stream || [],
+            size: size || 0,
+            number: number || 0,
+            totalElements: totalElements || 0,
+            totalPages: totalPages || 0,
+          })
+        ),
+        catchError((error) =>
+          of(
+            DocumentSearchActions.documentSearchResultsLoadingFailed({
+              error,
+            })
+          )
+        )
+      );
+  }
 }

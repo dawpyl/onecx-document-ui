@@ -1,10 +1,11 @@
 import { createSelector } from '@ngrx/store';
 import { createChildSelectors } from '@onecx/ngrx-accelerator';
 import { RowListGridData } from '@onecx/portal-integration-angular';
-import { DocumentDetail } from '../../../shared/generated';
+import { Channel, DocumentDetail, DocumentType } from '../../../shared/generated';
 import { documentFeature } from '../../document.reducers';
 import { initialState } from './document-search.reducers';
 import { DocumentSearchViewModel } from './document-search.viewmodel';
+import { SelectItem } from 'primeng/api';
 
 export const documentSearchSelectors = createChildSelectors(
   documentFeature.selectSearch,
@@ -20,11 +21,23 @@ export const selectResults = createSelector(
       ...item,
       id: item.id!,
       typeName: item.type?.name
-      // ACTION S7: Create a mapping of the items and their corresponding translation keys
-      // https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/search-results.html#action-7
     }));
   }
 );
+
+const selectDocumentTypes = createSelector(
+  documentSearchSelectors.selectAvailableDocumentTypes,
+  (docTypes: DocumentType[]): SelectItem[] => {
+    return docTypes.map(type => ({label: type.name, value: type.id}))
+  }
+);
+
+const selectChannels = createSelector(
+  documentSearchSelectors.selectAvailableChannels,
+  (channels: Channel[]): SelectItem[] => {
+    return channels.map(channel => ({label: channel.name, value: channel.id}))
+  }
+)
 
 export const selectDocumentSearchViewModel = createSelector(
   documentSearchSelectors.selectColumns,
@@ -36,6 +49,9 @@ export const selectDocumentSearchViewModel = createSelector(
   documentSearchSelectors.selectChartVisible,
   documentSearchSelectors.selectSearchLoadingIndicator,
   documentSearchSelectors.selectSearchExecuted,
+  documentSearchSelectors.selectCriteriaOptionsLoaded,
+  selectDocumentTypes,
+  selectChannels,
   (
     columns,
     searchCriteria,
@@ -45,7 +61,10 @@ export const selectDocumentSearchViewModel = createSelector(
     diagramComponentState,
     chartVisible,
     searchLoadingIndicator,
-    searchExecuted
+    searchExecuted,
+    criteriaOptionsLoaded,
+    availableDocumentTypes,
+    avilableChannels,
   ): DocumentSearchViewModel => ({
     columns,
     searchCriteria,
@@ -56,5 +75,8 @@ export const selectDocumentSearchViewModel = createSelector(
     chartVisible,
     searchLoadingIndicator,
     searchExecuted,
+    criteriaOptionsLoaded,
+    availableDocumentTypes,
+    avilableChannels,
   })
 );

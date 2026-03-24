@@ -10,6 +10,8 @@
       "NAME": "Diagramm für Suchergebnisse"
     },
     "HEADER_ACTIONS": {
+      "QUICK_UPLOAD": "Schnell hochladen",
+      "CREATE_NEW_DOCUMENT": "Neues Dokument erstellen",
       "EXPORT_ALL": "Alles exportieren",
       "SHOW_CHART": "Diagramm anzeigen",
       "HIDE_CHART": "Diagramm ausblenden",
@@ -42,11 +44,55 @@
       "MODIFICATION_COLUMN": "Geändert"
     },
     "CRITERIA": {
-      "INPUT_FIELDS": "ACTION S4: ADD TRANSLATION for your input fields: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/search-criteria.html#action-4",
-      "CHANGE_ME": {
-        "LABEL": "Ändere mich",
-        "ARIA-LABEL": "Ändere mich",
-        "TOOLTIP": "Ändere mich"
+      "ID": {
+        "LABEL": "ID",
+        "ARIA-LABEL": "ID",
+        "TOOLTIP": "ID"
+      },
+      "NAME": {
+        "LABEL": "Name",
+        "ARIA-LABEL": "Name",
+        "TOOLTIP": "Name"
+      },
+      "LIFE_CYCLE_STATE": {
+        "LABEL": "Lebenszyklusstatus",
+        "ARIA-LABEL": "Lebenszyklusstatus",
+        "TOOLTIP": "Lebenszyklusstatus"
+      },
+      "DOCUMENT_TYPE_ID": {
+        "LABEL": "Dokumenttyp",
+        "ARIA-LABEL": "Dokumenttyp",
+        "TOOLTIP": "Dokumenttyp"
+      },
+      "CHANNEL_NAME": {
+        "LABEL": "Kanal",
+        "ARIA-LABEL": "Kanal",
+        "TOOLTIP": "Kanal"
+      },
+      "START_DATE": {
+        "LABEL": "Startdatum",
+        "ARIA-LABEL": "Startdatum",
+        "TOOLTIP": "Startdatum"
+      },
+      "END_DATE": {
+        "LABEL": "Enddatum",
+        "ARIA-LABEL": "Enddatum",
+        "TOOLTIP": "Enddatum"
+      },
+      "CREATE_BY": {
+        "LABEL": "Erstellt von",
+        "ARIA-LABEL": "Erstellt von",
+        "TOOLTIP": "Erstellt von"
+      },
+      "OBJECT_REFERENCE_ID": {
+        "LABEL": "Objektreferenz-ID",
+        "ARIA-LABEL": "Objektreferenz-ID",
+        "TOOLTIP": "Objektreferenz-ID"
+      },
+      "OBJECT_REFERENCE_TYPE": {
+        "LABEL": "Objektreferenztyp",
+        "ARIA-LABEL": "Objektreferenztyp",
+        "TOOLTIP": "Objektreferenztyp"
       }
     }
   },

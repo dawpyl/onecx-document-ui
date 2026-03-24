@@ -10,6 +10,8 @@
       "NAME": "Diagram for Search Results"
     },
     "HEADER_ACTIONS": {
+      "QUICK_UPLOAD": "Quick upload",
+      "CREATE_NEW_DOCUMENT": "Create new document",
       "EXPORT_ALL": "Export all",
       "SHOW_CHART": "Show chart",
       "HIDE_CHART": "Hide chart",
@@ -42,11 +44,55 @@
       "MODIFICATION_COLUMN": "Modified"
     },
     "CRITERIA": {
-      "INPUT_FIELDS": "ACTION S4: ADD TRANSLATION for your input fields: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/search-criteria.html#action-4",
-      "CHANGE_ME": {
-        "LABEL": "Change Me",
-        "ARIA-LABEL": "Change Me",
-        "TOOLTIP": "Change Me"
+      "ID": {
+        "LABEL": "ID",
+        "ARIA-LABEL": "ID",
+        "TOOLTIP": "ID"
+      },
+      "NAME": {
+        "LABEL": "Name",
+        "ARIA-LABEL": "Name",
+        "TOOLTIP": "Name"
+      },
+      "LIFE_CYCLE_STATE": {
+        "LABEL": "Life Cycle State",
+        "ARIA-LABEL": "Life Cycle State",
+        "TOOLTIP": "Life Cycle State"
+      },
+      "DOCUMENT_TYPE_ID": {
+        "LABEL": "Document Type",
+        "ARIA-LABEL": "Document Type",
+        "TOOLTIP": "Document Type"
+      },
+      "CHANNEL_NAME": {
+        "LABEL": "Channel",
+        "ARIA-LABEL": "Channel",
+        "TOOLTIP": "Channel"
+      },
+      "START_DATE": {
+        "LABEL": "Start Date",
+        "ARIA-LABEL": "Start Date",
+        "TOOLTIP": "Start Date"
+      },
+      "END_DATE": {
+        "LABEL": "End Date",
+        "ARIA-LABEL": "End Date",
+        "TOOLTIP": "End Date"
+      },
+      "CREATE_BY": {
+        "LABEL": "Created By",
+        "ARIA-LABEL": "Created By",
+        "TOOLTIP": "Created By"
+      },
+      "OBJECT_REFERENCE_ID": {
+        "LABEL": "Object Reference ID",
+        "ARIA-LABEL": "Object Reference ID",
+        "TOOLTIP": "Object Reference ID"
+      },
+      "OBJECT_REFERENCE_TYPE": {
+        "LABEL": "Object Reference Type",
+        "ARIA-LABEL": "Object Reference Type",
+        "TOOLTIP": "Object Reference Type"
       }
     }
   },

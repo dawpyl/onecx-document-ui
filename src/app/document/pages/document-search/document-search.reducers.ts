@@ -18,6 +18,9 @@ export const initialState: DocumentSearchState = {
   searchLoadingIndicator: false,
   criteria: {},
   searchExecuted: false,
+  criteriaOptionsLoaded: false,
+  availableDocumentTypes: [],
+  availableChannels: []
 };
 
 export const documentSearchReducer = createReducer(
@@ -109,6 +112,28 @@ export const documentSearchReducer = createReducer(
     ): DocumentSearchState => ({
       ...state,
       diagramComponentState,
+    })
+  ),
+  on(
+    DocumentSearchActions.availableDocTypesRecived,
+    (
+      state: DocumentSearchState,
+      {types}
+    ): DocumentSearchState => ({
+      ...state,
+      availableDocumentTypes: types,
+      criteriaOptionsLoaded: true
+    })
+  ),
+  on(
+    DocumentSearchActions.availableChannelsRecived,
+    (
+      state: DocumentSearchState,
+      {channels}
+    ): DocumentSearchState => ({
+      ...state,
+      availableChannels: channels,
+      criteriaOptionsLoaded: true
     })
   )
 );

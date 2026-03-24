@@ -4,7 +4,7 @@ import {
   InteractiveDataViewComponentState,
   SearchHeaderComponentState,
 } from '@onecx/portal-integration-angular';
-import { DocumentDetail } from 'src/app/shared/generated';
+import { Channel, DocumentDetail, DocumentType } from 'src/app/shared/generated';
 import { DocumentSearchCriteriaSchema } from './document-search.parameters';
 
 export interface DocumentSearchState {
@@ -17,4 +17,7 @@ export interface DocumentSearchState {
   searchLoadingIndicator: boolean;
   criteria: DocumentSearchCriteriaSchema;
   searchExecuted: boolean;
+  criteriaOptionsLoaded: boolean;
+  availableDocumentTypes: DocumentType[];
+  availableChannels: Channel[];
 }

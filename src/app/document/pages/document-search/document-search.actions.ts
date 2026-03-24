@@ -4,7 +4,11 @@ import {
   InteractiveDataViewComponentState,
   SearchHeaderComponentState,
 } from '@onecx/portal-integration-angular';
-import { Channel, DocumentDetail, DocumentType } from '../../../shared/generated';
+import {
+  Channel,
+  DocumentDetail,
+  DocumentType,
+} from '../../../shared/generated';
 import { DocumentSearchCriteriaSchema } from './document-search.parameters';
 
 export const DocumentSearchActions = createActionGroup({
@@ -24,9 +28,11 @@ export const DocumentSearchActions = createActionGroup({
       totalElements: number;
       totalPages: number;
     }>(),
-    'load available criteria options and search': props<{criteria: DocumentSearchCriteriaSchema}>(),
-    'available channels recived': props<{channels: Channel[]}>(),
-    'available doc types recived': props<{types: DocumentType[]}>(),
+    'load available criteria options and search': props<{
+      criteria: DocumentSearchCriteriaSchema;
+    }>(),
+    'available channels recived': props<{ channels: Channel[] }>(),
+    'available doc types recived': props<{ types: DocumentType[] }>(),
     'document search results loading failed': props<{ error: string | null }>(),
     'Export button clicked': emptyProps(),
     'Result component state changed':

@@ -20,7 +20,7 @@ export const initialState: DocumentSearchState = {
   searchExecuted: false,
   criteriaOptionsLoaded: false,
   availableDocumentTypes: [],
-  availableChannels: []
+  availableChannels: [],
 };
 
 export const documentSearchReducer = createReducer(
@@ -116,24 +116,18 @@ export const documentSearchReducer = createReducer(
   ),
   on(
     DocumentSearchActions.availableDocTypesRecived,
-    (
-      state: DocumentSearchState,
-      {types}
-    ): DocumentSearchState => ({
+    (state: DocumentSearchState, { types }): DocumentSearchState => ({
       ...state,
       availableDocumentTypes: types,
-      criteriaOptionsLoaded: true
+      criteriaOptionsLoaded: true,
     })
   ),
   on(
     DocumentSearchActions.availableChannelsRecived,
-    (
-      state: DocumentSearchState,
-      {channels}
-    ): DocumentSearchState => ({
+    (state: DocumentSearchState, { channels }): DocumentSearchState => ({
       ...state,
       availableChannels: channels,
-      criteriaOptionsLoaded: true
+      criteriaOptionsLoaded: true,
     })
   )
 );

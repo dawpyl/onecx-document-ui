@@ -17,6 +17,7 @@ import { routes } from './document.routes';
 import { DocumentSearchComponent } from './pages/document-search/document-search.component';
 import { DocumentSearchCriteriaComponent } from './pages/document-search/components/document-search-criteria/document-search-criteria.component';
 import { DocumentSearchEffects } from './pages/document-search/document-search.effects';
+import { DocumentCreateOperationsEffects } from './operations/document-create-operations.effects';
 
 @NgModule({
   declarations: [DocumentSearchComponent, DocumentSearchCriteriaComponent],
@@ -32,7 +33,10 @@ import { DocumentSearchEffects } from './pages/document-search/document-search.e
     DropdownModule,
     MultiSelectModule,
     StoreModule.forFeature(documentFeature),
-    EffectsModule.forFeature([DocumentSearchEffects]),
+    EffectsModule.forFeature([
+      DocumentSearchEffects,
+      DocumentCreateOperationsEffects,
+    ]),
     TranslateModule,
   ],
 })

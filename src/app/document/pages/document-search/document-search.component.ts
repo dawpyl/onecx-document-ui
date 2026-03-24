@@ -1,10 +1,4 @@
-import {
-  Component,
-  Inject,
-  LOCALE_ID,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, Inject, LOCALE_ID, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import {
@@ -37,7 +31,8 @@ import { LifeCycleState } from 'src/app/shared/generated';
   styleUrls: ['./document-search.component.scss'],
 })
 export class DocumentSearchComponent implements OnInit {
-  @ViewChild(DocumentSearchCriteriaComponent) criteriaComponent!: DocumentSearchCriteriaComponent;
+  @ViewChild(DocumentSearchCriteriaComponent)
+  criteriaComponent!: DocumentSearchCriteriaComponent;
 
   viewModel$: Observable<DocumentSearchViewModel>;
   defaultDataSortDirection: DataSortDirection;
@@ -137,7 +132,10 @@ export class DocumentSearchComponent implements OnInit {
   }
 
   private buildLifeCycleStates(): SelectItem[] {
-    return Object.keys(LifeCycleState).map((state) => ({ label: state, value: state }));
+    return Object.keys(LifeCycleState).map((state) => ({
+      label: state,
+      value: state,
+    }));
   }
 
   private buildSearchFormGroup(): FormGroup {

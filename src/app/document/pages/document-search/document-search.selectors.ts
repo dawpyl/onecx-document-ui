@@ -1,7 +1,11 @@
 import { createSelector } from '@ngrx/store';
 import { createChildSelectors } from '@onecx/ngrx-accelerator';
 import { RowListGridData } from '@onecx/portal-integration-angular';
-import { Channel, DocumentDetail, DocumentType } from '../../../shared/generated';
+import {
+  Channel,
+  DocumentDetail,
+  DocumentType,
+} from '../../../shared/generated';
 import { documentFeature } from '../../document.reducers';
 import { initialState } from './document-search.reducers';
 import { DocumentSearchViewModel } from './document-search.viewmodel';
@@ -15,12 +19,12 @@ export const documentSearchSelectors = createChildSelectors(
 export const selectResults = createSelector(
   documentSearchSelectors.selectResults,
   (results: DocumentDetail[]): RowListGridData[] => {
-    console.log(results)
+    console.log(results);
     return results.map((item) => ({
       imagePath: '',
       ...item,
       id: item.id!,
-      typeName: item.type?.name
+      typeName: item.type?.name,
     }));
   }
 );
@@ -28,16 +32,19 @@ export const selectResults = createSelector(
 const selectDocumentTypes = createSelector(
   documentSearchSelectors.selectAvailableDocumentTypes,
   (docTypes: DocumentType[]): SelectItem[] => {
-    return docTypes.map(type => ({label: type.name, value: type.id}))
+    return docTypes.map((type) => ({ label: type.name, value: type.id }));
   }
 );
 
 const selectChannels = createSelector(
   documentSearchSelectors.selectAvailableChannels,
   (channels: Channel[]): SelectItem[] => {
-    return channels.map(channel => ({label: channel.name, value: channel.id}))
+    return channels.map((channel) => ({
+      label: channel.name,
+      value: channel.id,
+    }));
   }
-)
+);
 
 export const selectDocumentSearchViewModel = createSelector(
   documentSearchSelectors.selectColumns,
@@ -64,7 +71,7 @@ export const selectDocumentSearchViewModel = createSelector(
     searchExecuted,
     criteriaOptionsLoaded,
     availableDocumentTypes,
-    avilableChannels,
+    avilableChannels
   ): DocumentSearchViewModel => ({
     columns,
     searchCriteria,

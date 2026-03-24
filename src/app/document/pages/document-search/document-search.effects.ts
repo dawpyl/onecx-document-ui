@@ -13,8 +13,20 @@ import {
   PortalMessageService,
 } from '@onecx/portal-integration-angular';
 import equal from 'fast-deep-equal';
-import { catchError, forkJoin, map, mergeMap, Observable, of, switchMap, tap } from 'rxjs';
-import { DocumentControllerV1, DocumentTypeControllerV1 } from '../../../shared/generated';
+import {
+  catchError,
+  forkJoin,
+  map,
+  mergeMap,
+  Observable,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
+import {
+  DocumentControllerV1,
+  DocumentTypeControllerV1,
+} from '../../../shared/generated';
 import { DocumentSearchActions } from './document-search.actions';
 import { DocumentSearchComponent } from './document-search.component';
 import { documentSearchCriteriasSchema } from './document-search.parameters';
@@ -77,15 +89,17 @@ export class DocumentSearchEffects {
       //   documentSearchCriteriasSchema,
       //   false
       // ),
-      concatLatestFrom(() =>
-      [this.store.select(documentSearchSelectors.selectCriteria),
-        this.store.select(documentSearchSelectors.selectCriteriaOptionsLoaded)]
-      ),
+      concatLatestFrom(() => [
+        this.store.select(documentSearchSelectors.selectCriteria),
+        this.store.select(documentSearchSelectors.selectCriteriaOptionsLoaded),
+      ]),
       map(([, searchCriteria, criteriaOptionsLoaded]) => {
         if (criteriaOptionsLoaded) {
-          return DocumentSearchActions.performSearch({searchCriteria});
+          return DocumentSearchActions.performSearch({ searchCriteria });
         }
-        return DocumentSearchActions.loadAvailableCriteriaOptionsAndSearch({criteria: searchCriteria});
+        return DocumentSearchActions.loadAvailableCriteriaOptionsAndSearch({
+          criteria: searchCriteria,
+        });
       })
     );
   });
@@ -93,27 +107,33 @@ export class DocumentSearchEffects {
   loadCriteriaOptions$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(DocumentSearchActions.loadAvailableCriteriaOptionsAndSearch),
-      switchMap((action) => forkJoin([
-        this.documentService.getAllChannels(),
-        this.documentTypeService.getAllTypesOfDocument()
-      ]).pipe(
-        mergeMap(([channels, documentTypes]) => [
-          DocumentSearchActions.availableChannelsRecived({channels}),
-          DocumentSearchActions.availableDocTypesRecived({types: documentTypes}),
-          DocumentSearchActions.performSearch({searchCriteria: action.criteria})
-        ])
-      ))
-    )
-  })
+      switchMap((action) =>
+        forkJoin([
+          this.documentService.getAllChannels(),
+          this.documentTypeService.getAllTypesOfDocument(),
+        ]).pipe(
+          mergeMap(([channels, documentTypes]) => [
+            DocumentSearchActions.availableChannelsRecived({ channels }),
+            DocumentSearchActions.availableDocTypesRecived({
+              types: documentTypes,
+            }),
+            DocumentSearchActions.performSearch({
+              searchCriteria: action.criteria,
+            }),
+          ])
+        )
+      )
+    );
+  });
 
   performSearch$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(DocumentSearchActions.performSearch),
       switchMap((action) => {
-        return this.performSearch(action.searchCriteria)    
+        return this.performSearch(action.searchCriteria);
       })
-    )
-  })
+    );
+  });
 
   exportData$ = createEffect(
     () => {
@@ -158,7 +178,8 @@ export class DocumentSearchEffects {
   );
 
   private performSearch(searchCriteria: Record<string, any>) {
-    return this.documentService.getDocumentByCriteria({
+    return this.documentService
+      .getDocumentByCriteria({
         ...Object.entries(searchCriteria).reduce(
           (acc, [key, value]) => ({
             ...acc,

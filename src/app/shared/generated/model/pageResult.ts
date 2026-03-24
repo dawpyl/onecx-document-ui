@@ -7,6 +7,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { DocumentDetail } from './documentDetail';
 
 
 export interface PageResult { 
@@ -14,6 +15,6 @@ export interface PageResult {
     number?: number;
     size?: number;
     totalPages?: number;
-    stream?: Array<object>;
+    stream?: Array<DocumentDetail>;
 }
 

@@ -1,5 +1,5 @@
 <ocx-portal-page
-  permission="DOCUMENT#SEARCH"
+  permission="DOCUMENT#READ"
   [helpArticleId]="'DOCUMENT_SEARCH.HELP_ARTICLE_ID' | translate"
   *ngrxLet="viewModel$; let vm"
 >
@@ -18,7 +18,7 @@
       <div class="grid mt-0 p-fluid">
         <div class="col-12 md:col-3">
           <span class="p-float-label">
-            <input
+            <!-- <input
               pInputText
               id="changeMe"
               type="text"
@@ -38,7 +38,7 @@
               {{
                 'DOCUMENT_SEARCH.CRITERIA.CHANGE_ME.LABEL' | translate
               }}</label
-            >
+            > -->
           </span>
         </div>
       </div>

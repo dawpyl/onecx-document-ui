@@ -32,7 +32,14 @@
     },
     "RESULTS": {
       "CHANGE_ME": "Change Me",
-      "NAME": "Search Results"
+      "NAME": "Search Results",
+      "NAME_COLUMN": "Name",
+      "TYPE_NAME_COLUMN": "Type",
+      "STATE_COLUMN": "State",
+      "VERSION_COLUMN": "Version",
+      "USER_COLUMN": "User",
+      "CREATION_COLUMN": "Created",
+      "MODIFICATION_COLUMN": "Modified"
     },
     "CRITERIA": {
       "INPUT_FIELDS": "ACTION S4: ADD TRANSLATION for your input fields: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/search-criteria.html#action-4",

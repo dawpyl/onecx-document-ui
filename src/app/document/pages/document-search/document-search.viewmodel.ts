@@ -5,11 +5,11 @@ import {
   RowListGridData,
   SearchHeaderComponentState,
 } from '@onecx/portal-integration-angular';
-import { DocumentSearchCriteria } from './document-search.parameters';
+import { DocumentSearchCriteriaSchema } from './document-search.parameters';
 
 export interface DocumentSearchViewModel {
   columns: DataTableColumn[];
-  searchCriteria: DocumentSearchCriteria;
+  searchCriteria: DocumentSearchCriteriaSchema;
   results: RowListGridData[];
   resultComponentState: InteractiveDataViewComponentState | null;
   searchHeaderComponentState: SearchHeaderComponentState | null;

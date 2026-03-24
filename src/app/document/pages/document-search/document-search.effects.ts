@@ -14,7 +14,7 @@ import {
 } from '@onecx/portal-integration-angular';
 import equal from 'fast-deep-equal';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
-import { DocumentBffService } from '../../../shared/generated';
+import { DocumentControllerV1 } from '../../../shared/generated';
 import { DocumentSearchActions } from './document-search.actions';
 import { DocumentSearchComponent } from './document-search.component';
 import { documentSearchCriteriasSchema } from './document-search.parameters';
@@ -28,7 +28,7 @@ export class DocumentSearchEffects {
   constructor(
     private actions$: Actions,
     private route: ActivatedRoute,
-    private documentService: DocumentBffService,
+    private documentService: DocumentControllerV1,
     private router: Router,
     private store: Store,
     private messageService: PortalMessageService,
@@ -71,11 +71,11 @@ export class DocumentSearchEffects {
     return this.actions$.pipe(
       ofType(routerNavigatedAction),
       filterForNavigatedTo(this.router, DocumentSearchComponent),
-      filterOutQueryParamsHaveNotChanged(
-        this.router,
-        documentSearchCriteriasSchema,
-        false
-      ),
+      // filterOutQueryParamsHaveNotChanged(
+      //   this.router,
+      //   documentSearchCriteriasSchema,
+      //   false
+      // ),
       concatLatestFrom(() =>
         this.store.select(documentSearchSelectors.selectCriteria)
       ),
@@ -84,8 +84,7 @@ export class DocumentSearchEffects {
   });
 
   performSearch(searchCriteria: Record<string, any>) {
-    return this.documentService
-      .searchDocuments({
+    return this.documentService.getDocumentByCriteria({
         ...Object.entries(searchCriteria).reduce(
           (acc, [key, value]) => ({
             ...acc,
@@ -97,11 +96,11 @@ export class DocumentSearchEffects {
       .pipe(
         map(({ stream, size, number, totalElements, totalPages }) =>
           DocumentSearchActions.documentSearchResultsReceived({
-            stream,
-            size,
-            number,
-            totalElements,
-            totalPages,
+            stream: stream || [],
+            size: size || 0,
+            number: number || 0,
+            totalElements: totalElements || 0,
+            totalPages: totalPages || 0,
           })
         ),
         catchError((error) =>

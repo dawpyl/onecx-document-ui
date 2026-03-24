@@ -1,7 +1,7 @@
 import { createSelector } from '@ngrx/store';
 import { createChildSelectors } from '@onecx/ngrx-accelerator';
 import { RowListGridData } from '@onecx/portal-integration-angular';
-import { Document } from '../../../shared/generated';
+import { DocumentDetail } from '../../../shared/generated';
 import { documentFeature } from '../../document.reducers';
 import { initialState } from './document-search.reducers';
 import { DocumentSearchViewModel } from './document-search.viewmodel';
@@ -13,10 +13,13 @@ export const documentSearchSelectors = createChildSelectors(
 
 export const selectResults = createSelector(
   documentSearchSelectors.selectResults,
-  (results: Document[]): RowListGridData[] => {
+  (results: DocumentDetail[]): RowListGridData[] => {
+    console.log(results)
     return results.map((item) => ({
       imagePath: '',
       ...item,
+      id: item.id!,
+      typeName: item.type?.name
       // ACTION S7: Create a mapping of the items and their corresponding translation keys
       // https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/search-results.html#action-7
     }));

@@ -4,18 +4,18 @@ import {
   InteractiveDataViewComponentState,
   SearchHeaderComponentState,
 } from '@onecx/portal-integration-angular';
-import { Document } from '../../../shared/generated';
-import { DocumentSearchCriteria } from './document-search.parameters';
+import { DocumentDetail } from '../../../shared/generated';
+import { DocumentSearchCriteriaSchema } from './document-search.parameters';
 
 export const DocumentSearchActions = createActionGroup({
   source: 'DocumentSearch',
   events: {
     'Search button clicked': props<{
-      searchCriteria: DocumentSearchCriteria;
+      searchCriteria: DocumentSearchCriteriaSchema;
     }>(),
     'Reset button clicked': emptyProps(),
     'document search results received': props<{
-      stream: Document[];
+      stream: DocumentDetail[];
       size: number;
       number: number;
       totalElements: number;

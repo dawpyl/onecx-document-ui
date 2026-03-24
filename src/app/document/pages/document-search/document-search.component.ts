@@ -25,7 +25,7 @@ import { Calendar } from 'primeng/calendar';
 import { map, Observable } from 'rxjs';
 import { DocumentSearchActions } from './document-search.actions';
 import {
-  DocumentSearchCriteria,
+  DocumentSearchCriteriaSchema,
   documentSearchCriteriasSchema,
 } from './document-search.parameters';
 import { selectDocumentSearchViewModel } from './document-search.selectors';
@@ -84,8 +84,8 @@ export class DocumentSearchComponent implements OnInit {
   public documentSearchFormGroup: FormGroup = this.formBuilder.group({
     ...(Object.fromEntries(
       documentSearchCriteriasSchema.keyof().options.map((k) => [k, null])
-    ) as Record<keyof DocumentSearchCriteria, unknown>),
-  } satisfies Record<keyof DocumentSearchCriteria, unknown>);
+    ) as Record<keyof DocumentSearchCriteriaSchema, unknown>),
+  } satisfies Record<keyof DocumentSearchCriteriaSchema, unknown>);
 
   constructor(
     private readonly breadcrumbService: BreadcrumbService,
@@ -103,8 +103,10 @@ export class DocumentSearchComponent implements OnInit {
         routerLink: '/document',
       },
     ]);
-    this.viewModel$.subscribe((vm) =>
+    this.viewModel$.subscribe((vm) => {
+      console.log(vm)
       this.documentSearchFormGroup.patchValue(vm.searchCriteria)
+    }
     );
   }
 

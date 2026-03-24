@@ -1483,7 +1483,7 @@ components:
         stream:
           type: array
           items:
-            type: object
+            $ref: '#/components/schemas/DocumentDetail'
     RFCProblem:
       required:
         - type

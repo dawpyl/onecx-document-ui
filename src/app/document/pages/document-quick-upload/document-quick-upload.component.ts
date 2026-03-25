@@ -124,57 +124,7 @@ export class DocumentQuickUploadComponent implements OnInit {
     this.sortField = sortField;
     this.updateSorting();
   }
-  /**
-   * Sorting the field as per field names
-   */
-  updateSorting() {
-    if (this.sortField === 'fileData.name') {
-      this.sortOrder = this.sortOrderType === SortOrder.ASCENDING ? -1 : 1;
-    } else {
-      this.sortOrder = this.sortOrderType === SortOrder.ASCENDING ? 1 : -1;
-    }
-  }
-
-  /**
-   * Returns set of attachment array that user has uploaded
-   */
-
-  private mapAttachments(): AttachmentCreateUpdate[] {
-    return this.attachmentArray.map((element) => ({
-      name: element.name!,
-      description: element.description!,
-      mimeTypeId: element.mimeTypeId!,
-      validFor: {
-        startDateTime: undefined,
-        endDateTime: element.validFor?.endDateTime,
-      },
-      fileName: element.fileName,
-    }));
-  }
-
-  /**
-   * Returns set of files array that user has uploaded
-   */
-  private mapUploads(): { file: File }[] {
-    try {
-      return this.attachmentArray.map((element) => ({
-        file: element.fileData,
-      }));
-    } catch (err) {
-      console.error(err);
-      return [];
-    }
-  }
-
-  /**
-   * Creates new document. Returns a successful message on successful creation of document else returns an error message
-   */
-
-  /*
-    @Description -> initializing the documentCreateUpdateDTO object and passing that object as parameter to callCreateDocumentApi
-  */
-
-  public onSave(): void {
+  onSave(): void {
     const createRequest: DocumentCreateUpdate = {
       name: this.documentQuickUploadForm.controls['documentName'].value,
       typeId: this.documentQuickUploadForm.controls['typeId'].value,
@@ -191,15 +141,8 @@ export class DocumentQuickUploadComponent implements OnInit {
   }
 
   /**
-   * @param  documentCreateUpdateDTO object
-   * @Description calls the service class to send the object to the backend and sends the documentId (received from response object) to the callUploadAttachmentApi
-   */
-
-  /**
    * onCancel to cancel the quick upload dialog
-   * @param event
    */
-
   onCancel() {
     let documentQuickUploadform = this.documentQuickUploadForm.value;
     let flagIsValid = false;
@@ -232,6 +175,7 @@ export class DocumentQuickUploadComponent implements OnInit {
       relativeTo: this.activeRoute,
     });
   }
+
   /**
    * function to convert bytes to KB or MB according to bytes value
    * @param bytes file size value
@@ -260,15 +204,6 @@ export class DocumentQuickUploadComponent implements OnInit {
   }
 
   /**
-   * function to check if file is valid according to allowed file size
-   * @param file file data
-   */
-  isValidFile(file: File): boolean {
-    const fileSize = file.size ?? 0;
-    return fileSize > 0 && fileSize <= 2097152;
-  }
-
-  /**
    * function to remove file from attachmentArray according to array index
    * @param index index of current file
    */
@@ -277,24 +212,6 @@ export class DocumentQuickUploadComponent implements OnInit {
       (obj) => obj != attachment
     );
     this.validateAttachmentArray();
-  }
-
-  /**
-   * function to enable or disable create button according to file isValid flag
-   */
-  validateAttachmentArray() {
-    if (this.attachmentArray.length) {
-      let invalidAttachment = this.attachmentArray.filter(
-        (attachment) => !attachment.isValid
-      );
-      if (invalidAttachment.length) {
-        this.enableCreateButton = false;
-      } else {
-        this.enableCreateButton = true;
-      }
-    } else {
-      this.enableCreateButton = false;
-    }
   }
 
   getAttachmentIcon(attachment: AttachmentData): PrimeIcon {
@@ -337,5 +254,73 @@ export class DocumentQuickUploadComponent implements OnInit {
 
   get mimeTypes$(): Observable<SelectItem[]> {
     return this.store.select(selectQuickUploadMimeTypes);
+  }
+
+  /**
+   * Returns set of attachment array that user has uploaded
+   */
+  private mapAttachments(): AttachmentCreateUpdate[] {
+    return this.attachmentArray.map((element) => ({
+      name: element.name!,
+      description: element.description!,
+      mimeTypeId: element.mimeTypeId!,
+      validFor: {
+        startDateTime: undefined,
+        endDateTime: element.validFor?.endDateTime,
+      },
+      fileName: element.fileName,
+    }));
+  }
+
+  /**
+   * Returns set of files array that user has uploaded
+   */
+  private mapUploads(): { file: File }[] {
+    try {
+      return this.attachmentArray.map((element) => ({
+        file: element.fileData,
+      }));
+    } catch (err) {
+      console.error(err);
+      return [];
+    }
+  }
+
+  /**
+   * Sorting the field as per field names
+   */
+  private updateSorting(): void {
+    if (this.sortField === 'fileData.name') {
+      this.sortOrder = this.sortOrderType === SortOrder.ASCENDING ? -1 : 1;
+    } else {
+      this.sortOrder = this.sortOrderType === SortOrder.ASCENDING ? 1 : -1;
+    }
+  }
+
+  /**
+   * function to check if file is valid according to allowed file size
+   * @param file file data
+   */
+  private isValidFile(file: File): boolean {
+    const fileSize = file.size ?? 0;
+    return fileSize > 0 && fileSize <= 2097152;
+  }
+
+  /**
+   * function to enable or disable create button according to file isValid flag
+   */
+  private validateAttachmentArray(): void {
+    if (this.attachmentArray.length) {
+      let invalidAttachment = this.attachmentArray.filter(
+        (attachment) => !attachment.isValid
+      );
+      if (invalidAttachment.length) {
+        this.enableCreateButton = false;
+      } else {
+        this.enableCreateButton = true;
+      }
+    } else {
+      this.enableCreateButton = false;
+    }
   }
 }

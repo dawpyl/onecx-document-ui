@@ -38,10 +38,19 @@ export const documentQuickUploadReducer = createReducer(
     })
   ),
   on(
+    DocumentCreateOperationsActions.startDocumentCreation,
+    (state): DocumentQuickUploadState => ({
+      ...state,
+      optionsLoading: true
+    })
+  ),
+  on(
+    DocumentCreateOperationsActions.attachmentUploadFailed,
+    DocumentCreateOperationsActions.documentCreationFailed,
     DocumentCreateOperationsActions.loadReferenceDataFailed,
     (state): DocumentQuickUploadState => ({
       ...state,
-      optionsLoading: false,
+      optionsLoading: true
     })
   )
 );

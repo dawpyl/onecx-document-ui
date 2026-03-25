@@ -36,12 +36,10 @@ export class DocumentQuickUploadFormComponent implements OnInit {
 
   documentQuickUploadForm!: UntypedFormGroup;
   documentStatus: SelectItem[] = [];
-  translatedData: any;
 
   constructor(private readonly translateService: TranslateService) {}
 
   ngOnInit(): void {
-    this.getTranslatedData();
     this.documentQuickUploadForm = new FormGroup({
       documentName: new FormControl('', [
         Validators.required,
@@ -55,23 +53,6 @@ export class DocumentQuickUploadFormComponent implements OnInit {
     this.documentQuickUploadForm.valueChanges.subscribe(() => {
       this.formValid.emit(this.documentQuickUploadForm);
     });
-  }
-  /**
-   * function to get translatedData from translateService
-   */
-  getTranslatedData(): void {
-    this.translateService
-      .get([
-        'DOCUMENT_QUICK_UPLOAD.CREATE_SUCCESS',
-        'DOCUMENT_QUICK_UPLOAD.CREATE_ERROR',
-        'DOCUMENT_QUICK_UPLOAD.ATTACHMENTS.UPLOAD_SUCCESS',
-        'DOCUMENT_QUICK_UPLOAD.ATTACHMENTS.UPLOAD_ERROR',
-        'DOCUMENT_QUICK_UPLOAD.CANCEL_MODAL.CANCEL_CONFIRM_MESSAGE',
-        'GENERAL.PROCESSING',
-      ])
-      .subscribe((data) => {
-        this.translatedData = data;
-      });
   }
   /**
    *function to trim empty space from the begining and end of the form field on blur event
@@ -107,6 +88,45 @@ export class DocumentQuickUploadFormComponent implements OnInit {
   }
 
   /**
+   * function to handle input file event
+   * @param event change event raised by input element while uploading file
+   */
+  addFile(event: Event) {
+    this.selectedFileList.emit(false);
+    const input = event.target as HTMLInputElement;
+    const files = input.files;
+    if (files?.length) {
+      for (let i = 0; i < files.length; i++) {
+        this.enterDataToListView(files[i]);
+      }
+    }
+    this.validateAttachmentArray();
+  }
+
+  /**
+   * function to handle drop event for drag & drop functionality
+   * @param event web API drop event
+   */
+  dropFile(event: DragEvent) {
+    event.preventDefault();
+    let files = event.dataTransfer?.files;
+    if (files?.length) {
+      for (let i = 0; i < files.length; i++) {
+        this.enterDataToListView(files[i]);
+      }
+    }
+    this.validateAttachmentArray();
+  }
+
+  /**
+   * function to handle dragover event for drag & drop functionality
+   * @param event web API dragover event
+   */
+  allowDrop(event: Event) {
+    event.preventDefault();
+  }
+
+  /**
    * function to reterive document status
    */
   private loadDocumentStatus(): void {
@@ -126,26 +146,10 @@ export class DocumentQuickUploadFormComponent implements OnInit {
   }
 
   /**
-   * function to handle input file event
-   * @param event change event raised by input element while uploading file
-   */
-  addFile(event: Event) {
-    this.selectedFileList.emit(false);
-    const input = event.target as HTMLInputElement;
-    const files = input.files;
-    if (files?.length) {
-      for (let i = 0; i < files.length; i++) {
-        this.enterDataToListView(files[i]);
-      }
-    }
-    this.validateAttachmentArray();
-  }
-
-  /**
    * function to manipulate and store file data in attachmentArray
    * @param file file object having uploaded file data
    */
-  enterDataToListView(file: File) {
+  private enterDataToListView(file: File) {
     const attachmntObj: AttachmentData = {
       name: file.name,
       fileData: file,
@@ -174,39 +178,16 @@ export class DocumentQuickUploadFormComponent implements OnInit {
    * function to check if file is valid according to allowed file size
    * @param file file data
    */
-  isValidFile(file: AttachmentData): boolean {
+  private isValidFile(file: AttachmentData): boolean {
     const fileSize = file.fileData.size ?? 0;
     const mimeTypeId = file.mimeTypeId;
     return !!(mimeTypeId && fileSize && fileSize <= 2097152);
   }
 
   /**
-   * function to handle drop event for drag & drop functionality
-   * @param event web API drop event
-   */
-  dropFile(event: DragEvent) {
-    event.preventDefault();
-    let files = event.dataTransfer?.files;
-    if (files?.length) {
-      for (let i = 0; i < files.length; i++) {
-        this.enterDataToListView(files[i]);
-      }
-    }
-    this.validateAttachmentArray();
-  }
-
-  /**
-   * function to handle dragover event for drag & drop functionality
-   * @param event web API dragover event
-   */
-  allowDrop(event: Event) {
-    event.preventDefault();
-  }
-
-  /**
    * function to enable or disable create button according to file isValid flag
    */
-  validateAttachmentArray() {
+  private validateAttachmentArray(): void {
     if (this.attachmentArray.length) {
       let invalidAttachment = this.attachmentArray.filter(
         (attachment) => !attachment.isValid
@@ -224,9 +205,9 @@ export class DocumentQuickUploadFormComponent implements OnInit {
   /**
    * Function to show failed documents at top of the list
    */
-  sortAttachmentArray() {
-    let validAttachmentArray: any = [];
-    let inValidAttachmentArray: any = [];
+  private sortAttachmentArray(): void {
+    let validAttachmentArray: AttachmentData[] = [];
+    let inValidAttachmentArray: AttachmentData[] = [];
     this.attachmentArray.forEach((element) => {
       if (!element['isValid']) {
         inValidAttachmentArray.unshift(element);

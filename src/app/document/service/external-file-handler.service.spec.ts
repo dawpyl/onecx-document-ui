@@ -1,7 +1,6 @@
 import { ExternalFileHandlerService } from './external-file-handler.service';
 import { TestBed } from '@angular/core/testing';
 
-
 describe('FileUploaderService', () => {
   let service: ExternalFileHandlerService;
 

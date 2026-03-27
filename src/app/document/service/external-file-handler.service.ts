@@ -23,10 +23,11 @@ export class ExternalFileHandlerService {
   }
 
   downloadFile(urlResponse: AttachmentPresignedUrlResponse): Observable<Blob> {
-    return this.httpClient.get(urlResponse.url!, {observe: 'response', responseType: 'blob'})
-    .pipe(
-      retry(3),
-      map((response) => response.body!)
-    );
+    return this.httpClient
+      .get(urlResponse.url!, { observe: 'response', responseType: 'blob' })
+      .pipe(
+        retry(3),
+        map((response) => response.body!)
+      );
   }
 }

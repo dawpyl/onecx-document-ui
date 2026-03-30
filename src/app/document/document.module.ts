@@ -24,6 +24,8 @@ import { SharedModule } from '../shared/shared.module';
 import { documentFeature } from './document.reducers';
 import { routes } from './document.routes';
 import { DocumentCreateOperationsEffects } from './operations/document-create-operations.effects';
+import { DocumentCreateComponent } from './pages/document-create/document-create.component';
+import { DocumentCreateEffects } from './pages/document-create/document-create.effects';
 import { DocumentQuickUploadFormComponent } from './pages/document-quick-upload/document-quick-upload-form/document-quick-upload-form.component';
 import { DocumentQuickUploadComponent } from './pages/document-quick-upload/document-quick-upload.component';
 import { DocumentSearchCriteriaComponent } from './pages/document-search/components/document-search-criteria/document-search-criteria.component';
@@ -36,6 +38,7 @@ import { DocumentDetailsCharacteristicsComponent } from './pages/document-detail
 @NgModule({
   providers: [providePortalDialogService()],
   declarations: [
+    DocumentCreateComponent,
     DocumentDetailsComponent,
     DocumentSearchComponent,
     DocumentSearchCriteriaComponent,
@@ -63,6 +66,7 @@ import { DocumentDetailsCharacteristicsComponent } from './pages/document-detail
     TooltipModule,
     StoreModule.forFeature(documentFeature),
     EffectsModule.forFeature([
+      DocumentCreateEffects,
       DocumentDetailsEffects,
       DocumentSearchEffects,
       DocumentCreateOperationsEffects,

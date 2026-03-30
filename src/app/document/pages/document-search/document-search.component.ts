@@ -103,7 +103,7 @@ export class DocumentSearchComponent implements OnInit {
   }
 
   createNewDocument() {
-    return;
+    this.router.navigate(['create-document'], { relativeTo: this.route });
   }
 
   exportItems() {

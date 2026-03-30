@@ -74,3 +74,8 @@ export type DocumentCharacteristicsFormRawValue = ReturnType<
 export type DocumentDetailsFormRawValue = ReturnType<
   DocumentDetailsFormGroup['getRawValue']
 >;
+
+export type DocumentCreateDetailsStepData = Omit<
+  DocumentDetailsFormValue,
+  'attachments' | 'characteristics'
+>;

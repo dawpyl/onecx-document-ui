@@ -1,0 +1,22 @@
+<ocx-portal-page *ngrxLet="viewModel$; let vm">
+  <ocx-page-header
+    header="{{ 'DOCUMENT_CREATE.HEADER' | translate }}"
+    [disableDefaultActions]="true"
+    [manualBreadcrumbs]="true"
+  >
+    <div class="document-create-shell card p-3 mt-2">
+      <div class="mb-3">
+        <strong>{{ 'DOCUMENT_CREATE.STEPPER.STEP' | translate }}:</strong>
+        <span>{{ vm.activeStep + 1 }} / 3</span>
+      </div>
+
+      <div class="text-color-secondary mb-4" *ngIf="vm.referenceDataLoading">
+        {{ 'GENERAL.PROCESSING' | translate }}
+      </div>
+
+      <div class="text-color-secondary mb-4" *ngIf="!vm.referenceDataLoading">
+        {{ 'DOCUMENT_SEARCH.HEADER_ACTIONS.CREATE_NEW_DOCUMENT' | translate }}
+      </div>
+    </div>
+  </ocx-page-header>
+</ocx-portal-page>

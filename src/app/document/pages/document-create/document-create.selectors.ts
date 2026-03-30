@@ -1,0 +1,50 @@
+import { createSelector } from '@ngrx/store';
+import { createChildSelectors } from '@onecx/ngrx-accelerator';
+import { SelectItem } from 'primeng/api';
+import { documentFeature } from '../../document.reducers';
+import { initialState } from './document-create.reducers';
+import { DocumentCreateViewModel } from './document-create.viewmodel';
+
+export const documentCreateSelectors = createChildSelectors(
+  documentFeature.selectCreate,
+  initialState
+);
+
+export const selectCreateDocumentTypes = createSelector(
+  documentCreateSelectors.selectAvailableDocumentTypes,
+  (types): SelectItem[] =>
+    types.map((type) => ({
+      label: type.name,
+      value: type.id,
+    }))
+);
+
+export const selectCreateMimeTypes = createSelector(
+  documentCreateSelectors.selectAvailableMimeTypes,
+  (mimeTypes): SelectItem[] =>
+    mimeTypes.map((mimeType) => ({
+      label: mimeType.name,
+      value: mimeType.id,
+    }))
+);
+
+export const selectDocumentCreateViewModel = createSelector(
+  documentCreateSelectors.selectActiveStep,
+  documentCreateSelectors.selectSubmitting,
+  documentCreateSelectors.selectReferenceDataLoading,
+  documentCreateSelectors.selectReferenceDataLoaded,
+  documentCreateSelectors.selectError,
+  (
+    activeStep,
+    submitting,
+    referenceDataLoading,
+    referenceDataLoaded,
+    error
+  ): DocumentCreateViewModel => ({
+    activeStep,
+    submitting,
+    referenceDataLoading,
+    referenceDataLoaded,
+    error,
+  })
+);

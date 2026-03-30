@@ -1,5 +1,6 @@
 import { combineReducers, createFeature } from '@ngrx/store';
 import { DocumentState } from './document.state';
+import { documentCreateReducer } from './pages/document-create/document-create.reducers';
 import { documentDetailsReducer } from './pages/document-details/document-details.reducers';
 import { documentQuickUploadReducer } from './pages/document-quick-upload/document-quick-upload.reducers';
 import { documentSearchReducer } from './pages/document-search/document-search.reducers';
@@ -7,6 +8,7 @@ import { documentSearchReducer } from './pages/document-search/document-search.r
 export const documentFeature = createFeature({
   name: 'document',
   reducer: combineReducers<DocumentState>({
+    create: documentCreateReducer,
     details: documentDetailsReducer,
     search: documentSearchReducer,
     quickUpload: documentQuickUploadReducer,

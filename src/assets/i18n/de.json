@@ -254,6 +254,16 @@
       "CONFIRM": "Ihre Änderungen werden nicht gespeichert."
     }
   },
+  "DOCUMENT_CREATE": {
+    "HEADER": "Dokument erstellen",
+    "BREADCRUMB": "Erstellen",
+    "STEPPER": {
+      "STEP": "Schritt",
+      "DETAILS": "Details",
+      "ATTACHMENTS": "Anhaenge",
+      "CHARACTERISTICS": "Eigenschaften"
+    }
+  },
   "GENERAL": {
     "CANCEL": "Abbrechen",
     "CREATE": "Erstellen",

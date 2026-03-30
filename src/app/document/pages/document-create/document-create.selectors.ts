@@ -30,18 +30,27 @@ export const selectCreateMimeTypes = createSelector(
 
 export const selectDocumentCreateViewModel = createSelector(
   documentCreateSelectors.selectActiveStep,
+  documentCreateSelectors.selectDetails,
+  documentCreateSelectors.selectAttachments,
+  documentCreateSelectors.selectCharacteristics,
   documentCreateSelectors.selectSubmitting,
   documentCreateSelectors.selectReferenceDataLoading,
   documentCreateSelectors.selectReferenceDataLoaded,
   documentCreateSelectors.selectError,
   (
     activeStep,
+    details,
+    attachments,
+    characteristics,
     submitting,
     referenceDataLoading,
     referenceDataLoaded,
     error
   ): DocumentCreateViewModel => ({
     activeStep,
+    details,
+    attachments,
+    characteristics,
     submitting,
     referenceDataLoading,
     referenceDataLoaded,

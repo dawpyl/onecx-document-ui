@@ -3,20 +3,31 @@
     header="{{ 'DOCUMENT_CREATE.HEADER' | translate }}"
     [disableDefaultActions]="true"
     [manualBreadcrumbs]="true"
-  >
-    <div class="document-create-shell card p-3 mt-2">
-      <div class="mb-3">
-        <strong>{{ 'DOCUMENT_CREATE.STEPPER.STEP' | translate }}:</strong>
-        <span>{{ vm.activeStep + 1 }} / 3</span>
-      </div>
+  ></ocx-page-header>
 
-      <div class="text-color-secondary mb-4" *ngIf="vm.referenceDataLoading">
-        {{ 'GENERAL.PROCESSING' | translate }}
-      </div>
+  <div class="document-create-shell card p-3 mt-2">
+    <p-steps [model]="stepsModel" [activeIndex]="vm.activeStep"> </p-steps>
 
-      <div class="text-color-secondary mb-4" *ngIf="!vm.referenceDataLoading">
-        {{ 'DOCUMENT_SEARCH.HEADER_ACTIONS.CREATE_NEW_DOCUMENT' | translate }}
-      </div>
-    </div>
-  </ocx-page-header>
+    <ng-container *ngIf="!vm.referenceDataLoading" [ngSwitch]="vm.activeStep">
+      <app-document-create-details-form
+        *ngSwitchCase="steps.Details"
+        [details]="vm.details"
+        (next)="onDetailsNext(vm, $event)"
+      ></app-document-create-details-form>
+
+      <app-document-create-attachments
+        *ngSwitchCase="steps.Attachments"
+        [attachments]="vm.attachments"
+        (back)="onAttachmentsBack(vm)"
+        (next)="onAttachmentsNext(vm, $event)"
+      ></app-document-create-attachments>
+
+      <app-document-create-characteristics
+        *ngSwitchCase="steps.Characteristics"
+        [characteristics]="vm.characteristics"
+        (back)="onCharacteristicsBack(vm)"
+        (save)="onCharacteristicsSave($event)"
+      ></app-document-create-characteristics>
+    </ng-container>
+  </div>
 </ocx-portal-page>

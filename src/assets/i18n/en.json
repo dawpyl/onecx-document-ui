@@ -259,6 +259,16 @@
       "CONFIRM": "Your changes will not be saved."
     }
   },
+  "DOCUMENT_CREATE": {
+    "HEADER": "Create Document",
+    "BREADCRUMB": "Create",
+    "STEPPER": {
+      "STEP": "Step",
+      "DETAILS": "Details",
+      "ATTACHMENTS": "Attachments",
+      "CHARACTERISTICS": "Characteristics"
+    }
+  },
   "GENERAL": {
     "CANCEL": "Cancel",
     "CREATE": "Create",

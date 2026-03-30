@@ -17,6 +17,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { StepsModule } from 'primeng/steps';
 import { TableModule } from 'primeng/table';
 import { TabViewModule } from 'primeng/tabview';
 import { TooltipModule } from 'primeng/tooltip';
@@ -26,6 +27,9 @@ import { routes } from './document.routes';
 import { DocumentCreateOperationsEffects } from './operations/document-create-operations.effects';
 import { DocumentCreateComponent } from './pages/document-create/document-create.component';
 import { DocumentCreateEffects } from './pages/document-create/document-create.effects';
+import { DocumentCreateAttachmentsComponent } from './pages/document-create/components/document-create-attachments/document-create-attachments.component';
+import { DocumentCreateCharacteristicsComponent } from './pages/document-create/components/document-create-characteristics/document-create-characteristics.component';
+import { DocumentCreateDetailsFormComponent } from './pages/document-create/components/document-create-details-form/document-create-details-form.component';
 import { DocumentQuickUploadFormComponent } from './pages/document-quick-upload/document-quick-upload-form/document-quick-upload-form.component';
 import { DocumentQuickUploadComponent } from './pages/document-quick-upload/document-quick-upload.component';
 import { DocumentSearchCriteriaComponent } from './pages/document-search/components/document-search-criteria/document-search-criteria.component';
@@ -39,6 +43,9 @@ import { DocumentDetailsCharacteristicsComponent } from './pages/document-detail
   providers: [providePortalDialogService()],
   declarations: [
     DocumentCreateComponent,
+    DocumentCreateDetailsFormComponent,
+    DocumentCreateAttachmentsComponent,
+    DocumentCreateCharacteristicsComponent,
     DocumentDetailsComponent,
     DocumentSearchComponent,
     DocumentSearchCriteriaComponent,
@@ -61,6 +68,7 @@ import { DocumentDetailsCharacteristicsComponent } from './pages/document-detail
     DropdownModule,
     InputTextModule,
     MultiSelectModule,
+    StepsModule,
     TableModule,
     TabViewModule,
     TooltipModule,

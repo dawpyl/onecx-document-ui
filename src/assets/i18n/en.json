@@ -14,7 +14,9 @@
       "EDIT": " Edit",
       "DELETE": "Delete",
       "CANCEL": "Cancel",
-      "SAVE": "Save"
+      "SAVE": "Save",
+      "NEXT": "Next",
+      "SUBMIT": "Submit"
     },
     "FORM": {
       "ID": {
@@ -262,12 +264,61 @@
   "DOCUMENT_CREATE": {
     "HEADER": "Create Document",
     "BREADCRUMB": "Create",
+    "GENERAL": {
+      "SUBMIT": "Submit"
+    },
     "STEPPER": {
       "STEP": "Step",
       "DETAILS": "Details",
       "ATTACHMENTS": "Attachments",
       "CHARACTERISTICS": "Characteristics"
+    },
+    "ATTACHMENTS": {
+      "LIST_TITLE": "Attachments",
+      "UNNAMED": "Unnamed attachment",
+      "REMOVE": "Remove attachment",
+      "EMPTY": "No attachments added yet.",
+      "FORM": {
+        "NAME": {
+          "LABEL": "Name"
+        },
+        "MIME_TYPE": {
+          "LABEL": "MIME Type"
+        },
+        "VALIDITY": {
+          "LABEL": "Valid to"
+        },
+        "DESCRIPTION": {
+          "LABEL": "Description"
+        }
+      },
+      "ERROR_MESSAGES": {
+        "MIME_TYPE_NOT_SUPPORTED": "Selected file type is not supported."
+      }
+    },
+    "CHARACTERISTICS": {
+      "EMPTY": "No characteristics defined.",
+      "COLUMNS": {
+        "NAME": "Name",
+        "VALUE": "Value",
+        "ACTIONS": "Actions"
+      },
+      "ACTIONS": {
+        "REMOVE": "Remove characteristic"
+      }
+    },
+    "SUCCESS_MESSAGES": {
+      "CREATE_SUCCESS": "Document created successfully."
+    },
+    "ERROR_MESSAGES": {
+      "CREATE_ERROR": "Document creation failed.",
+      "SUBMIT_VALIDATION": "Please complete required document details before submit."
     }
+  },
+  "FILE_UPLOAD": {
+    "DRAG_DROP": "Drag and drop files here",
+    "OR": "or",
+    "CHOOSE_BTN": "Choose file"
   },
   "GENERAL": {
     "CANCEL": "Cancel",

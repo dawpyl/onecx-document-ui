@@ -5,34 +5,36 @@
     [manualBreadcrumbs]="true"
   ></ocx-page-header>
 
-  <div class="document-create-shell card p-3 mt-2">
-    <p-steps [model]="stepsModel" [activeIndex]="vm.activeStep"> </p-steps>
+  <ocx-page-content>
+    <div class="document-create-shell p-3 mt-2">
+      <p-steps [model]="stepsModel" [activeIndex]="vm.activeStep"> </p-steps>
 
-    <ng-container *ngIf="!vm.referenceDataLoading" [ngSwitch]="vm.activeStep">
-      <app-document-create-details-form
-        *ngSwitchCase="steps.Details"
-        [details]="vm.details"
-        [availableTypes]="(documentTypes$ | async) || []"
-        (next)="onDetailsNext(vm, $event)"
-      ></app-document-create-details-form>
+      <ng-container *ngIf="!vm.referenceDataLoading" [ngSwitch]="vm.activeStep">
+        <app-document-create-details-form
+          *ngSwitchCase="steps.Details"
+          [details]="vm.details"
+          [availableTypes]="(documentTypes$ | async) || []"
+          (next)="onDetailsNext(vm, $event)"
+        ></app-document-create-details-form>
 
-      <app-document-create-attachments
-        *ngSwitchCase="steps.Attachments"
-        [attachments]="vm.attachments"
-        [supportedMimeTypes]="(mimeTypes$ | async) || []"
-        (back)="onAttachmentsBack(vm, $event)"
-        (next)="onAttachmentsNext(vm, $event)"
-        (attachmentMimeTypeNotSupported)="
-          onAttachmentMimeTypeNotSupported($event)
-        "
-      ></app-document-create-attachments>
+        <app-document-create-attachments
+          *ngSwitchCase="steps.Attachments"
+          [attachments]="vm.attachments"
+          [supportedMimeTypes]="(mimeTypes$ | async) || []"
+          (back)="onAttachmentsBack(vm, $event)"
+          (next)="onAttachmentsNext(vm, $event)"
+          (attachmentMimeTypeNotSupported)="
+            onAttachmentMimeTypeNotSupported($event)
+          "
+        ></app-document-create-attachments>
 
-      <app-document-create-characteristics
-        *ngSwitchCase="steps.Characteristics"
-        [characteristics]="vm.characteristics"
-        (back)="onCharacteristicsBack(vm)"
-        (save)="onCharacteristicsSave($event)"
-      ></app-document-create-characteristics>
-    </ng-container>
-  </div>
+        <app-document-create-characteristics
+          *ngSwitchCase="steps.Characteristics"
+          [characteristics]="vm.characteristics"
+          (back)="onCharacteristicsBack(vm)"
+          (save)="onCharacteristicsSave($event)"
+        ></app-document-create-characteristics>
+      </ng-container>
+    </div>
+  </ocx-page-content>
 </ocx-portal-page>

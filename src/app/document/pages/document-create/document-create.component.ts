@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { TranslateService } from '@ngx-translate/core';
 import { BreadcrumbService } from '@onecx/portal-integration-angular';
 import { SelectItem } from 'primeng/api';
 import { Observable } from 'rxjs';
@@ -34,7 +35,8 @@ export class DocumentCreateComponent implements OnInit {
 
   constructor(
     private readonly store: Store,
-    private readonly breadcrumbService: BreadcrumbService
+    private readonly breadcrumbService: BreadcrumbService,
+    private readonly translateService: TranslateService
   ) {
     this.viewModel$ = this.store.select(selectDocumentCreateViewModel);
     this.documentTypes$ = this.store.select(selectCreateDocumentTypes);
@@ -57,9 +59,19 @@ export class DocumentCreateComponent implements OnInit {
       },
     ]);
     this.stepsModel = [
-      { label: 'DOCUMENT_CREATE.STEPPER.DETAILS' },
-      { label: 'DOCUMENT_CREATE.STEPPER.ATTACHMENTS' },
-      { label: 'DOCUMENT_CREATE.STEPPER.CHARACTERISTICS' },
+      {
+        label: this.translateService.instant('DOCUMENT_CREATE.STEPPER.DETAILS'),
+      },
+      {
+        label: this.translateService.instant(
+          'DOCUMENT_CREATE.STEPPER.ATTACHMENTS'
+        ),
+      },
+      {
+        label: this.translateService.instant(
+          'DOCUMENT_CREATE.STEPPER.CHARACTERISTICS'
+        ),
+      },
     ];
   }
 

@@ -14,7 +14,9 @@
       "EDIT": "Bearbeiten",
       "DELETE": "Löschen",
       "CANCEL": "Abbrechen",
-      "SAVE": "Speichern"
+      "SAVE": "Speichern",
+      "NEXT": "Weiter",
+      "SUBMIT": "Senden"
     },
     "FORM": {
       "ID": {
@@ -257,12 +259,61 @@
   "DOCUMENT_CREATE": {
     "HEADER": "Dokument erstellen",
     "BREADCRUMB": "Erstellen",
+    "GENERAL": {
+      "SUBMIT": "Senden"
+    },
     "STEPPER": {
       "STEP": "Schritt",
       "DETAILS": "Details",
       "ATTACHMENTS": "Anhaenge",
       "CHARACTERISTICS": "Eigenschaften"
+    },
+    "ATTACHMENTS": {
+      "LIST_TITLE": "Anhänge",
+      "UNNAMED": "Unbenannter Anhang",
+      "REMOVE": "Anhang entfernen",
+      "EMPTY": "Noch keine Anhänge hinzugefügt.",
+      "FORM": {
+        "NAME": {
+          "LABEL": "Name"
+        },
+        "MIME_TYPE": {
+          "LABEL": "MIME-Typ"
+        },
+        "VALIDITY": {
+          "LABEL": "Gültig bis"
+        },
+        "DESCRIPTION": {
+          "LABEL": "Beschreibung"
+        }
+      },
+      "ERROR_MESSAGES": {
+        "MIME_TYPE_NOT_SUPPORTED": "Der ausgewählte Dateityp wird nicht unterstützt."
+      }
+    },
+    "CHARACTERISTICS": {
+      "EMPTY": "Keine Eigenschaften definiert.",
+      "COLUMNS": {
+        "NAME": "Name",
+        "VALUE": "Wert",
+        "ACTIONS": "Aktionen"
+      },
+      "ACTIONS": {
+        "REMOVE": "Eigenschaft entfernen"
+      }
+    },
+    "SUCCESS_MESSAGES": {
+      "CREATE_SUCCESS": "Dokument erfolgreich erstellt."
+    },
+    "ERROR_MESSAGES": {
+      "CREATE_ERROR": "Dokument konnte nicht erstellt werden.",
+      "SUBMIT_VALIDATION": "Bitte füllen Sie die erforderlichen Dokumentdetails vor dem Senden aus."
     }
+  },
+  "FILE_UPLOAD": {
+    "DRAG_DROP": "Dateien hier ablegen",
+    "OR": "oder",
+    "CHOOSE_BTN": "Datei auswählen"
   },
   "GENERAL": {
     "CANCEL": "Abbrechen",

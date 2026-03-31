@@ -19,7 +19,6 @@ export const documentSearchSelectors = createChildSelectors(
 export const selectResults = createSelector(
   documentSearchSelectors.selectResults,
   (results: DocumentDetail[]): RowListGridData[] => {
-    console.log(results);
     return results.map((item) => ({
       imagePath: '',
       ...item,

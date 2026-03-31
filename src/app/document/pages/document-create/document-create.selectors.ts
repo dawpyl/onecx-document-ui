@@ -62,3 +62,14 @@ export const selectCanGoNextFromAttachments = createSelector(
   documentCreateSelectors.selectAttachments,
   (attachments) => attachments.length > 0
 );
+
+export const selectDocumentCreateSubmissionSource = createSelector(
+  documentCreateSelectors.selectDetails,
+  documentCreateSelectors.selectAttachments,
+  documentCreateSelectors.selectCharacteristics,
+  (details, attachments, characteristics) => ({
+    details,
+    attachments,
+    characteristics,
+  })
+);

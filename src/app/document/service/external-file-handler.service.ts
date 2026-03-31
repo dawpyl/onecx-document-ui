@@ -15,7 +15,6 @@ export class ExternalFileHandlerService {
   }
 
   uploadAttachment(url: string, file: File): Observable<void> {
-    console.log(file);
     return this.httpClient.put<void>(url, file).pipe(
       retry(3),
       catchError((error) => throwError(() => error))

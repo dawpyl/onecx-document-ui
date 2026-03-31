@@ -50,7 +50,7 @@ export const DocumentCreateOperationsActions = createActionGroup({
       successfulIds: string[];
       failedIds: string[];
     }>(),
-    'document creation completed': emptyProps(),
-    'document creation final step failed': emptyProps(),
+    'document creation completed': props<{ documentId: string }>(),
+    'document creation final step failed': props<{ documentId: string }>(),
   },
 });

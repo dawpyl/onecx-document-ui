@@ -92,3 +92,9 @@ export type AttachmentDraft = {
   fileName: string;
   file: File;
 };
+
+export type DocumentCreateSubmissionSource = {
+  details: Partial<DocumentCreateDetailsStepData> | null;
+  attachments: AttachmentDraft[];
+  characteristics: DocumentCharacteristicFormValue[];
+};

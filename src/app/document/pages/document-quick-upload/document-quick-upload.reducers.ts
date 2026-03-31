@@ -77,8 +77,8 @@ export const documentQuickUploadReducer = createReducer(
     DocumentCreateOperationsActions.documentCreationFinalStepFailed,
     DocumentCreateOperationsActions.documentCreationFailed,
     DocumentCreateOperationsActions.loadReferenceDataFailed,
-    (state): DocumentQuickUploadState => ({
-      ...state,
+    (): DocumentQuickUploadState => ({
+      ...initialState,
       optionsLoading: false,
     })
   )

@@ -25,6 +25,8 @@ import {
 import { ExternalFileHandlerService } from '../service/external-file-handler.service';
 import { documentQuickUploadSelectors } from '../pages/document-quick-upload/document-quick-upload.selectors';
 import { AttachmentFile } from '../types/document-create.types';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AppStateService } from '@onecx/angular-integration-interface';
 
 @Injectable({ providedIn: 'root' })
 export class DocumentCreateOperationsEffects {
@@ -34,7 +36,10 @@ export class DocumentCreateOperationsEffects {
     private documentService: DocumentControllerV1,
     private readonly documentTypeService: DocumentTypeControllerV1,
     private readonly supportedMimeTypeService: SupportedMimeTypeControllerV1,
-    private uploaderService: ExternalFileHandlerService
+    private uploaderService: ExternalFileHandlerService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private appStateService: AppStateService
   ) {}
 
   private readonly referenceDataPaths = ['quick-upload', 'create-document'];
@@ -241,17 +246,45 @@ export class DocumentCreateOperationsEffects {
           : of(null);
         return forkJoin([metadata$, auditLog$]).pipe(
           map(() =>
-            DocumentCreateOperationsActions.documentCreationCompleted()
+            DocumentCreateOperationsActions.documentCreationCompleted({
+              documentId: action.documentId,
+            })
           ),
           catchError(() =>
             of(
-              DocumentCreateOperationsActions.documentCreationFinalStepFailed()
+              DocumentCreateOperationsActions.documentCreationFinalStepFailed({
+                documentId: action.documentId,
+              })
             )
           )
         );
       })
     );
   });
+
+  navigateToDetails$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(
+          DocumentCreateOperationsActions.documentCreationCompleted,
+          DocumentCreateOperationsActions.documentCreationFinalStepFailed
+        ),
+        switchMap((action) =>
+          this.appStateService.currentMfe$.asObservable().pipe(
+            map((mfe) => {
+              this.router.navigate([
+                `/${mfe.baseHref}`,
+                'document-management',
+                'details',
+                action.documentId,
+              ]);
+            })
+          )
+        )
+      );
+    },
+    { dispatch: false }
+  );
 
   private buildPresignedUrlRequests(
     document: DocumentDetail

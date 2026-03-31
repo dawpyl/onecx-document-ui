@@ -117,6 +117,14 @@ Each file should contain **one kind of structure only** — a file holds either 
 
 Components should contain minimal logic. Business logic, data transformation, and side effects belong in **services** or **NgRx effects**, not in component classes. Components are responsible for connecting the store and the template — nothing more.
 
+### Input Change Handling (`@Input`, setter, `OnChanges`)
+
+Before adding input-change handling, first verify whether the component is the **single source of truth** for that data.
+
+- If the component is the only place that can change the value (for example, local form state in a child component that is only emitted upward), do **not** add `OnChanges` and do not re-sync from `@Input` on every cycle.
+- If an `@Input` can change from the parent and the component must react, prefer an **`@Input` setter** for focused, explicit reaction.
+- Use `OnChanges` only in very well-justified cases where multiple inputs must be coordinated together or where a setter would be insufficient.
+
 ### Simplicity Over Defensiveness
 
 Avoid overly defensive code. Do not add redundant null/undefined guards, excessive try/catch blocks, or protective checks that are not warranted by actual failure scenarios. Trust the types and keep the code straightforward.

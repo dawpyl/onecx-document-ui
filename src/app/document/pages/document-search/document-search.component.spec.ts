@@ -5,7 +5,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LetDirective } from '@ngrx/component';
 import { ofType } from '@ngrx/effects';
 import { Store, StoreModule } from '@ngrx/store';
@@ -432,6 +432,114 @@ describe('DocumentSearchComponent', () => {
     expect(store.dispatch).toHaveBeenCalledWith(
       DocumentSearchActions.detailsButtonClicked({ id: 'test-id' })
     );
+  });
+
+  it('should dispatch resetButtonClicked and reset form on resetSearch', () => {
+    jest.spyOn(store, 'dispatch');
+    component.documentSearchFormGroup.patchValue({ name: 'something' });
+    component.resetSearch();
+    expect(store.dispatch).toHaveBeenCalledWith(
+      DocumentSearchActions.resetButtonClicked()
+    );
+    expect(component.documentSearchFormGroup.value.name).toBeNull();
+  });
+
+  it('should dispatch exportButtonClicked when exportItems is called', () => {
+    jest.spyOn(store, 'dispatch');
+    component.exportItems();
+    expect(store.dispatch).toHaveBeenCalledWith(
+      DocumentSearchActions.exportButtonClicked()
+    );
+  });
+
+  it('should navigate to quick-upload on quickUpload', () => {
+    const router = TestBed.inject(Router);
+    jest.spyOn(router, 'navigate');
+    component.quickUpload();
+    expect(router.navigate).toHaveBeenCalledWith(
+      ['quick-upload'],
+      expect.objectContaining({ relativeTo: expect.anything() })
+    );
+  });
+
+  it('should navigate to create-document on createNewDocument', () => {
+    const router = TestBed.inject(Router);
+    jest.spyOn(router, 'navigate');
+    component.createNewDocument();
+    expect(router.navigate).toHaveBeenCalledWith(
+      ['create-document'],
+      expect.objectContaining({ relativeTo: expect.anything() })
+    );
+  });
+
+  describe('buildHeaderActions', () => {
+    it('should emit 3 header actions: quickUpload, createNewDocument, exportAll', (done) => {
+      component.headerActions$.subscribe((actions) => {
+        expect(actions.length).toBe(3);
+        done();
+      });
+    });
+
+    it('should set quickUpload action as show=always with DOCUMENT#WRITE permission', (done) => {
+      component.headerActions$.subscribe((actions) => {
+        const action = actions[0];
+        expect(action.show).toBe('always');
+        expect(action.permission).toBe('DOCUMENT#WRITE');
+        done();
+      });
+    });
+
+    it('should set exportAll action as show=asOverflow', (done) => {
+      component.headerActions$.subscribe((actions) => {
+        const exportAction = actions[2];
+        expect(exportAction.show).toBe('asOverflow');
+        done();
+      });
+    });
+  });
+
+  describe('buildLifeCycleStates', () => {
+    it('should build SelectItem[] from LifeCycleState enum keys', () => {
+      const states = component.lifeCycleStates;
+      expect(states.length).toBeGreaterThan(0);
+      states.forEach((item) => {
+        expect(item).toHaveProperty('label');
+        expect(item).toHaveProperty('value');
+        expect(item.label).toBe(item.value);
+      });
+    });
+
+    it('should include Draft, Review, Released, Archived state keys', () => {
+      const values = component.lifeCycleStates.map((s) => s.value);
+      expect(values).toContain('Draft');
+      expect(values).toContain('Review');
+      expect(values).toContain('Released');
+      expect(values).toContain('Archived');
+    });
+  });
+
+  describe('buildSearchFormGroup', () => {
+    it('should build form group with all keys from documentSearchCriteriasSchema', () => {
+      const {
+        documentSearchCriteriasSchema,
+      } = require('./document-search.parameters');
+      const schemaKeys = documentSearchCriteriasSchema.keyof().options;
+      const formKeys = Object.keys(component.documentSearchFormGroup.controls);
+      schemaKeys.forEach((key: string) => {
+        expect(formKeys).toContain(key);
+      });
+    });
+
+    it('should initialize all form controls to null before viewModel patchValue', () => {
+      // Create a fresh component without store subscription interference
+      const freshFixture = TestBed.createComponent(DocumentSearchComponent);
+      const freshComponent = freshFixture.componentInstance;
+      // Before detectChanges the form is built but store subscription hasn't patched values yet
+      const values = freshComponent.documentSearchFormGroup.getRawValue();
+      Object.values(values).forEach((val) => {
+        expect(val).toBeNull();
+      });
+    });
   });
   // <<SPEC-EXTENSIONS-MARKER-!!!-DO-NOT-REMOVE-!!!>>
 });

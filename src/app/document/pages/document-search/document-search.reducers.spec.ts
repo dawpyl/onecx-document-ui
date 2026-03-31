@@ -154,4 +154,65 @@ describe('DocumentSearchReducer', () => {
     const state = reducers.documentSearchReducer(preState, action);
     expect(state).toBe(preState);
   });
+
+  it('should set searchLoadingIndicator to false when routerNavigatedAction has empty queryParams', () => {
+    const { routerNavigatedAction } = require('@ngrx/router-store');
+    const preState = {
+      ...reducers.initialState,
+      searchLoadingIndicator: false,
+    };
+    const action = routerNavigatedAction({
+      payload: { routerState: { root: { queryParams: {} } } },
+    });
+    const state = reducers.documentSearchReducer(preState, action);
+    expect(state.searchLoadingIndicator).toBe(false);
+  });
+
+  it('should set availableDocumentTypes and criteriaOptionsLoaded=true on availableDocTypesRecived', () => {
+    const types = [{ id: 't1', name: 'Invoice' }] as any;
+    const action = DocumentSearchActions.availableDocTypesRecived({ types });
+    const state = reducers.documentSearchReducer(reducers.initialState, action);
+    expect(state.availableDocumentTypes).toEqual(types);
+    expect(state.criteriaOptionsLoaded).toBe(true);
+  });
+
+  it('should set availableChannels and criteriaOptionsLoaded=true on availableChannelsRecived', () => {
+    const channels = [{ id: 'c1', name: 'Email' }] as any;
+    const action = DocumentSearchActions.availableChannelsRecived({ channels });
+    const state = reducers.documentSearchReducer(reducers.initialState, action);
+    expect(state.availableChannels).toEqual(channels);
+    expect(state.criteriaOptionsLoaded).toBe(true);
+  });
+
+  it('should set searchExecuted=true on documentSearchResultsReceived', () => {
+    const action = DocumentSearchActions.documentSearchResultsReceived({
+      stream: [],
+      size: 0,
+      number: 0,
+      totalElements: 0,
+      totalPages: 0,
+    });
+    const state = reducers.documentSearchReducer(reducers.initialState, action);
+    expect(state.searchExecuted).toBe(true);
+  });
+
+  it('should set searchLoadingIndicator=false on documentSearchResultsReceived', () => {
+    const preState = { ...reducers.initialState, searchLoadingIndicator: true };
+    const action = DocumentSearchActions.documentSearchResultsReceived({
+      stream: [],
+      size: 0,
+      number: 0,
+      totalElements: 0,
+      totalPages: 0,
+    });
+    const state = reducers.documentSearchReducer(preState, action);
+    expect(state.searchLoadingIndicator).toBe(false);
+  });
+
+  it('should reset searchExecuted=false on resetButtonClicked', () => {
+    const preState = { ...reducers.initialState, searchExecuted: true };
+    const action = DocumentSearchActions.resetButtonClicked();
+    const state = reducers.documentSearchReducer(preState, action);
+    expect(state.searchExecuted).toBe(false);
+  });
 });

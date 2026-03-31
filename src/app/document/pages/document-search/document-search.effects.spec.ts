@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Action, Store } from '@ngrx/store';
@@ -79,9 +79,9 @@ describe('DocumentSearchEffects', () => {
     } as unknown as ActivatedRoute;
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
       providers: [
         DocumentSearchEffects,
+        provideRouter([]),
         provideMockStore({
           initialState: { documentSearch: initialState },
         }),

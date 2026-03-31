@@ -182,5 +182,132 @@ describe('DocumentDetailsComponent', () => {
     component.ngOnDestroy();
     expect(spy).toHaveBeenCalled();
   });
+
+  it('should dispatch cancelButtonClicked with dirty=true when form is dirty', () => {
+    jest.spyOn(store, 'dispatch');
+    component.formGroup.markAsDirty();
+    component.cancel();
+    expect(store.dispatch).toHaveBeenCalledWith(
+      DocumentDetailsActions.cancelButtonClicked({ dirty: true })
+    );
+  });
+
+  it('should remove characteristic at given index when onCharacteristicRemove is called', () => {
+    store.overrideSelector(selectDocumentDetailsViewModel, {
+      ...baseDocumentDetailsViewModel,
+      editMode: true,
+    });
+    store.refreshState();
+    const arr = component.characteristicsFormArray;
+    const initialLength = arr.length;
+    component.onCharacteristicAdd();
+    component.onCharacteristicAdd();
+    expect(arr.length).toBe(initialLength + 2);
+    component.onCharacteristicRemove(0);
+    expect(arr.length).toBe(initialLength + 1);
+  });
+
+  it('should add a characteristic row when onCharacteristicAdd is called', () => {
+    store.overrideSelector(selectDocumentDetailsViewModel, {
+      ...baseDocumentDetailsViewModel,
+      editMode: true,
+    });
+    store.refreshState();
+    const arr = component.characteristicsFormArray;
+    const before = arr.length;
+    component.onCharacteristicAdd();
+    expect(arr.length).toBe(before + 1);
+  });
+
+  it('should expose attachmentsFormArray from the form group', () => {
+    expect(component.attachmentsFormArray).toBeDefined();
+  });
+
+  it('should build 5 header actions covering back, edit, cancel, save and delete', (done) => {
+    component.headerActions$.subscribe((actions) => {
+      expect(actions.length).toBe(5);
+      const labelKeys = actions.map((a) => a.labelKey);
+      expect(labelKeys).toContain('DOCUMENT_DETAILS.GENERAL.BACK');
+      expect(labelKeys).toContain('DOCUMENT_DETAILS.GENERAL.EDIT');
+      expect(labelKeys).toContain('DOCUMENT_DETAILS.GENERAL.CANCEL');
+      expect(labelKeys).toContain('DOCUMENT_DETAILS.GENERAL.SAVE');
+      expect(labelKeys).toContain('DOCUMENT_DETAILS.GENERAL.DELETE');
+      done();
+    });
+  });
+
+  it('should show back and edit actions and hide cancel and save when not in editMode', (done) => {
+    store.overrideSelector(selectDocumentDetailsViewModel, {
+      ...baseDocumentDetailsViewModel,
+      editMode: false,
+    });
+    store.refreshState();
+    component.headerActions$.subscribe((actions) => {
+      const back = actions.find(
+        (a) => a.labelKey === 'DOCUMENT_DETAILS.GENERAL.BACK'
+      );
+      const edit = actions.find(
+        (a) => a.labelKey === 'DOCUMENT_DETAILS.GENERAL.EDIT'
+      );
+      const cancel = actions.find(
+        (a) => a.labelKey === 'DOCUMENT_DETAILS.GENERAL.CANCEL'
+      );
+      const save = actions.find(
+        (a) => a.labelKey === 'DOCUMENT_DETAILS.GENERAL.SAVE'
+      );
+      expect(back?.showCondition).toBe(true);
+      expect(edit?.showCondition).toBe(true);
+      expect(cancel?.showCondition).toBe(false);
+      expect(save?.showCondition).toBe(false);
+      done();
+    });
+  });
+
+  it('should show cancel and save actions and hide back and edit when in editMode', (done) => {
+    store.overrideSelector(selectDocumentDetailsViewModel, {
+      ...baseDocumentDetailsViewModel,
+      editMode: true,
+    });
+    store.refreshState();
+    component.headerActions$.subscribe((actions) => {
+      const back = actions.find(
+        (a) => a.labelKey === 'DOCUMENT_DETAILS.GENERAL.BACK'
+      );
+      const edit = actions.find(
+        (a) => a.labelKey === 'DOCUMENT_DETAILS.GENERAL.EDIT'
+      );
+      const cancel = actions.find(
+        (a) => a.labelKey === 'DOCUMENT_DETAILS.GENERAL.CANCEL'
+      );
+      const save = actions.find(
+        (a) => a.labelKey === 'DOCUMENT_DETAILS.GENERAL.SAVE'
+      );
+      expect(back?.showCondition).toBe(false);
+      expect(edit?.showCondition).toBe(false);
+      expect(cancel?.showCondition).toBe(true);
+      expect(save?.showCondition).toBe(true);
+      done();
+    });
+  });
+
+  it('should disable cancel and save when isSubmitting=true', (done) => {
+    store.overrideSelector(selectDocumentDetailsViewModel, {
+      ...baseDocumentDetailsViewModel,
+      editMode: true,
+      isSubmitting: true,
+    });
+    store.refreshState();
+    component.headerActions$.subscribe((actions) => {
+      const cancel = actions.find(
+        (a) => a.labelKey === 'DOCUMENT_DETAILS.GENERAL.CANCEL'
+      );
+      const save = actions.find(
+        (a) => a.labelKey === 'DOCUMENT_DETAILS.GENERAL.SAVE'
+      );
+      expect(cancel?.disabled).toBe(true);
+      expect(save?.disabled).toBe(true);
+      done();
+    });
+  });
   // <<SPEC-EXTENSIONS-MARKER-!!!-DO-NOT-REMOVE-!!!>>
 });

@@ -83,3 +83,12 @@ export type DocumentCreateDetailsStepData = Omit<
   DocumentDetailsFormValue,
   'attachments' | 'characteristics'
 >;
+
+export type AttachmentDraft = {
+  name: string | null;
+  description: string | null;
+  mimeTypeId: string | null;
+  validForEnd: string | null;
+  fileName: string;
+  file: File;
+};

@@ -1,6 +1,6 @@
 import { DocumentCreateStep } from '../../types/document-create-step.enum';
 import {
-  AttachmentData,
+  AttachmentDraft,
   DocumentCharacteristicFormValue,
   DocumentCreateDetailsStepData,
 } from '../../types/document-create.types';
@@ -8,7 +8,7 @@ import {
 export interface DocumentCreateViewModel {
   activeStep: DocumentCreateStep;
   details: Partial<DocumentCreateDetailsStepData> | null;
-  attachments: AttachmentData[];
+  attachments: AttachmentDraft[];
   characteristics: DocumentCharacteristicFormValue[];
   submitting: boolean;
   referenceDataLoading: boolean;

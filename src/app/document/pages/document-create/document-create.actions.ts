@@ -1,6 +1,6 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import {
-  AttachmentData,
+  AttachmentDraft,
   DocumentCharacteristicFormValue,
   DocumentDetailsFormValue,
 } from '../../types/document-create.types';
@@ -19,12 +19,13 @@ export const DocumentCreateActions = createActionGroup({
       >;
     }>(),
     'attachments step patched': props<{
-      attachments: AttachmentData[];
+      attachments: AttachmentDraft[];
     }>(),
     'characteristics step patched': props<{
       characteristics: DocumentCharacteristicFormValue[];
     }>(),
     'step validation failed': props<{ error: string }>(),
+    'attachment mime type not supported': props<{ fileName: string }>(),
     'submit clicked': emptyProps(),
     'submit finished': emptyProps(),
     'reset clicked': emptyProps(),

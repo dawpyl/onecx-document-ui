@@ -57,3 +57,8 @@ export const selectDocumentCreateViewModel = createSelector(
     error,
   })
 );
+
+export const selectCanGoNextFromAttachments = createSelector(
+  documentCreateSelectors.selectAttachments,
+  (attachments) => attachments.length > 0
+);

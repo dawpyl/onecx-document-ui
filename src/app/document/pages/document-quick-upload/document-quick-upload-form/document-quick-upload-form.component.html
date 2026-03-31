@@ -16,21 +16,6 @@
             'DOCUMENT_QUICK_UPLOAD.BASIC_FIELDS.DOCUMENT_NAME' | translate
           }}</label>
         </span>
-        <!-- <span
-          *ngIf="documentQuickUploadForm?.controls['documentName']?.invalid"
-          class="alert alert-danger text-sm"
-        >
-          <span
-            *ngIf="
-              documentQuickUploadForm?.controls['documentName'].errors
-                .hasSpecialChars
-            "
-          >
-            {{
-              'DOCUMENT_QUICK_UPLOAD.FORM.SPECIAL_CHARACTER_ERROR' | translate
-            }}
-          </span> -->
-        <!-- </span> -->
       </div>
       <div class="col-6">
         <span class="p-float-label" controlErrorAnchor>
@@ -81,62 +66,20 @@
       </div>
     </div>
     <div class="col-5 p-fluid mt-3 pr-3">
-      <div
-        class="p-field"
-        id="upload-attachment-block"
-        (dragover)="allowDrop($event)"
-        (drop)="dropFile($event)"
-      >
-        <div class="col-12" id="upload-button-block">
-          <div id="dragDropTitle">
-            {{ 'DOCUMENT_QUICK_UPLOAD.ATTACHMENTS.DRAG_DROP' | translate }}
-          </div>
-          <div id="dragDropTitle">
-            {{ 'DOCUMENT_QUICK_UPLOAD.ATTACHMENTS.OR' | translate }}
-          </div>
-          <div class="required" id="upload-button">
-            <div class="upload-btn-wrapper">
-              <button
-                class="w-12 attachment-btn"
-                pButton
-                [label]="
-                  'DOCUMENT_QUICK_UPLOAD.ATTACHMENTS.CHOOSE_BTN_TITLE'
-                    | translate
-                "
-                [pTooltip]="
-                  'DOCUMENT_QUICK_UPLOAD.ATTACHMENTS.CHOOSE_BTN_TITLE'
-                    | translate
-                "
-                tooltipPosition="top"
-                icon="pi pi-plus"
-                iconPos="left"
-                [disabled]="isSubmitted"
-              ></button>
-              <input
-                type="file"
-                name="myfile"
-                accept="audio/*,image/*,video/*,.xlsx,.xls,.doc, .docx,.ppt, .pptx,.pdf"
-                data-max-size="2048"
-                (change)="addFile($event)"
-                [disabled]="isSubmitted"
-                multiple
-                title
-              />
-            </div>
-          </div>
-          <div id="upload-file-validation">
-            <p>
-              {{
-                'DOCUMENT_QUICK_UPLOAD.ATTACHMENTS.ALLOWED_FILETYPE_MESSAGE'
-                  | translate
-              }}
-              ({{
-                'DOCUMENT_QUICK_UPLOAD.ATTACHMENTS.ALLOWED_FILESIZE_MESSAGE'
-                  | translate
-              }})
-            </p>
-          </div>
-        </div>
+      <app-file-upload
+        [multiple]="true"
+        [disabled]="isSubmitted"
+        (filesSelected)="onFilesSelected($event)"
+      ></app-file-upload>
+      <div class="text-sm text-color-secondary mt-1">
+        {{
+          'DOCUMENT_QUICK_UPLOAD.ATTACHMENTS.ALLOWED_FILETYPE_MESSAGE'
+            | translate
+        }}
+        ({{
+          'DOCUMENT_QUICK_UPLOAD.ATTACHMENTS.ALLOWED_FILESIZE_MESSAGE'
+            | translate
+        }})
       </div>
     </div>
   </div>

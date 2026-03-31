@@ -5,14 +5,16 @@ import { SelectItem } from 'primeng/api';
 import { Observable } from 'rxjs';
 import { DocumentCreateStep } from '../../types/document-create-step.enum';
 import {
-  AttachmentData,
+  AttachmentDraft,
   DocumentCharacteristicFormValue,
   DocumentCreateDetailsStepData,
 } from '../../types/document-create.types';
 import { DocumentCreateActions } from './document-create.actions';
 import { DocumentCreateViewModel } from './document-create.viewmodel';
 import {
+  selectCanGoNextFromAttachments,
   selectCreateDocumentTypes,
+  selectCreateMimeTypes,
   selectDocumentCreateViewModel,
 } from './document-create.selectors';
 import { MenuItem } from 'primeng/api';
@@ -27,6 +29,8 @@ export class DocumentCreateComponent implements OnInit {
   stepsModel: MenuItem[] = [];
   viewModel$: Observable<DocumentCreateViewModel>;
   documentTypes$: Observable<SelectItem[]>;
+  mimeTypes$: Observable<SelectItem[]>;
+  canGoNextFromAttachments$: Observable<boolean>;
 
   constructor(
     private readonly store: Store,
@@ -34,6 +38,10 @@ export class DocumentCreateComponent implements OnInit {
   ) {
     this.viewModel$ = this.store.select(selectDocumentCreateViewModel);
     this.documentTypes$ = this.store.select(selectCreateDocumentTypes);
+    this.mimeTypes$ = this.store.select(selectCreateMimeTypes);
+    this.canGoNextFromAttachments$ = this.store.select(
+      selectCanGoNextFromAttachments
+    );
   }
 
   ngOnInit(): void {
@@ -49,15 +57,9 @@ export class DocumentCreateComponent implements OnInit {
       },
     ]);
     this.stepsModel = [
-      {
-        label: 'DOCUMENT_CREATE.STEPPER.DETAILS',
-      },
-      {
-        label: 'DOCUMENT_CREATE.STEPPER.ATTACHMENTS',
-      },
-      {
-        label: 'DOCUMENT_CREATE.STEPPER.CHARACTERISTICS',
-      },
+      { label: 'DOCUMENT_CREATE.STEPPER.DETAILS' },
+      { label: 'DOCUMENT_CREATE.STEPPER.ATTACHMENTS' },
+      { label: 'DOCUMENT_CREATE.STEPPER.CHARACTERISTICS' },
     ];
   }
 
@@ -65,47 +67,45 @@ export class DocumentCreateComponent implements OnInit {
     vm: DocumentCreateViewModel,
     details: Partial<DocumentCreateDetailsStepData>
   ): void {
+    this.store.dispatch(DocumentCreateActions.detailsStepPatched({ details }));
     this.store.dispatch(
-      DocumentCreateActions.detailsStepPatched({
-        details,
-      })
-    );
-    this.store.dispatch(
-      DocumentCreateActions.goToNextStep({
-        currentStep: vm.activeStep,
-      })
+      DocumentCreateActions.goToNextStep({ currentStep: vm.activeStep })
     );
   }
 
-  onAttachmentsBack(vm: DocumentCreateViewModel): void {
+  onAttachmentsBack(
+    vm: DocumentCreateViewModel,
+    attachments: AttachmentDraft[]
+  ): void {
     this.store.dispatch(
-      DocumentCreateActions.goToPreviousStep({
-        currentStep: vm.activeStep,
-      })
+      DocumentCreateActions.attachmentsStepPatched({ attachments })
+    );
+    this.store.dispatch(
+      DocumentCreateActions.goToPreviousStep({ currentStep: vm.activeStep })
     );
   }
 
   onAttachmentsNext(
     vm: DocumentCreateViewModel,
-    attachments: AttachmentData[]
+    attachments: AttachmentDraft[]
   ): void {
     this.store.dispatch(
-      DocumentCreateActions.attachmentsStepPatched({
-        attachments,
-      })
+      DocumentCreateActions.attachmentsStepPatched({ attachments })
     );
     this.store.dispatch(
-      DocumentCreateActions.goToNextStep({
-        currentStep: vm.activeStep,
-      })
+      DocumentCreateActions.goToNextStep({ currentStep: vm.activeStep })
+    );
+  }
+
+  onAttachmentMimeTypeNotSupported(fileName: string): void {
+    this.store.dispatch(
+      DocumentCreateActions.attachmentMimeTypeNotSupported({ fileName })
     );
   }
 
   onCharacteristicsBack(vm: DocumentCreateViewModel): void {
     this.store.dispatch(
-      DocumentCreateActions.goToPreviousStep({
-        currentStep: vm.activeStep,
-      })
+      DocumentCreateActions.goToPreviousStep({ currentStep: vm.activeStep })
     );
   }
 
@@ -113,9 +113,7 @@ export class DocumentCreateComponent implements OnInit {
     characteristics: DocumentCharacteristicFormValue[]
   ): void {
     this.store.dispatch(
-      DocumentCreateActions.characteristicsStepPatched({
-        characteristics,
-      })
+      DocumentCreateActions.characteristicsStepPatched({ characteristics })
     );
     this.store.dispatch(DocumentCreateActions.submitClicked());
   }

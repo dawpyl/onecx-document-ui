@@ -6,9 +6,6 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-
-// Third party imports
-import { TranslateService } from '@ngx-translate/core';
 import { SelectItem } from 'primeng/api';
 import { AttachmentData } from 'src/app/document/types/document-create.types';
 import {
@@ -27,17 +24,15 @@ export class DocumentQuickUploadFormComponent implements OnInit {
   @Input() documentTypes: SelectItem[] = [];
   @Input() supportedMimeType: SelectItem[] = [];
   @Output() enableCreateButton = new EventEmitter<boolean>();
-  @Output() formValid = new EventEmitter<any>();
-  @Output() attchmentList = new EventEmitter<any>();
-  @Output() selectedFileList = new EventEmitter<any>();
+  @Output() formValid = new EventEmitter<UntypedFormGroup>();
+  @Output() attchmentList = new EventEmitter<AttachmentData[]>();
+  @Output() selectedFileList = new EventEmitter<boolean>();
 
   showToaster = false;
   isSubmitted = false;
 
   documentQuickUploadForm!: UntypedFormGroup;
   documentStatus: SelectItem[] = [];
-
-  constructor(private readonly translateService: TranslateService) {}
 
   ngOnInit(): void {
     this.documentQuickUploadForm = new FormGroup({
@@ -88,6 +83,17 @@ export class DocumentQuickUploadFormComponent implements OnInit {
   }
 
   /**
+   * Handles file selection from FileUploadComponent (multiple mode)
+   */
+  onFilesSelected(files: File[]): void {
+    this.selectedFileList.emit(false);
+    for (const file of files) {
+      this.enterDataToListView(file);
+    }
+    this.validateAttachmentArray();
+  }
+
+  /**
    * function to handle input file event
    * @param event change event raised by input element while uploading file
    */
@@ -109,7 +115,7 @@ export class DocumentQuickUploadFormComponent implements OnInit {
    */
   dropFile(event: DragEvent) {
     event.preventDefault();
-    let files = event.dataTransfer?.files;
+    const files = event.dataTransfer?.files;
     if (files?.length) {
       for (let i = 0; i < files.length; i++) {
         this.enterDataToListView(files[i]);
@@ -135,7 +141,7 @@ export class DocumentQuickUploadFormComponent implements OnInit {
       value: LifeCycleState[key as keyof typeof LifeCycleState],
     }));
     // set "DRAFT" as default value for document status dropdown
-    let docStatusDraft = this.documentStatus.filter(
+    const docStatusDraft = this.documentStatus.filter(
       (document) => document.value.toLowerCase() == 'draft'
     );
     if (docStatusDraft.length > 0) {
@@ -189,7 +195,7 @@ export class DocumentQuickUploadFormComponent implements OnInit {
    */
   private validateAttachmentArray(): void {
     if (this.attachmentArray.length) {
-      let invalidAttachment = this.attachmentArray.filter(
+      const invalidAttachment = this.attachmentArray.filter(
         (attachment) => !attachment.isValid
       );
       if (invalidAttachment.length) {
@@ -206,8 +212,8 @@ export class DocumentQuickUploadFormComponent implements OnInit {
    * Function to show failed documents at top of the list
    */
   private sortAttachmentArray(): void {
-    let validAttachmentArray: AttachmentData[] = [];
-    let inValidAttachmentArray: AttachmentData[] = [];
+    const validAttachmentArray: AttachmentData[] = [];
+    const inValidAttachmentArray: AttachmentData[] = [];
     this.attachmentArray.forEach((element) => {
       if (!element['isValid']) {
         inValidAttachmentArray.unshift(element);

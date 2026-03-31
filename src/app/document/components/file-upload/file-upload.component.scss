@@ -1,0 +1,18 @@
+.file-upload-area {
+  border: 2px dashed var(--surface-border);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+
+  input[type='file'] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    font-size: 100px;
+  }
+}

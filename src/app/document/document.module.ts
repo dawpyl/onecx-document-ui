@@ -36,6 +36,8 @@ import { DocumentSearchCriteriaComponent } from './pages/document-search/compone
 import { DocumentSearchComponent } from './pages/document-search/document-search.component';
 import { DocumentSearchEffects } from './pages/document-search/document-search.effects';
 import { DocumentDetailsAttachmentListComponent } from './pages/document-details/components/document-details-attachment-list/document-details-attachment-list.component';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { FileUploadComponent } from './components/file-upload/file-upload.component';
 import { DocumentDetailsFormComponent } from './components/document-details-form/document-details-form.component';
 import { DocumentDetailsCharacteristicsComponent } from './pages/document-details/components/document-details-characteristics/document-details-characteristics.component';
 
@@ -54,6 +56,7 @@ import { DocumentDetailsCharacteristicsComponent } from './pages/document-detail
     DocumentDetailsFormComponent,
     DocumentDetailsAttachmentListComponent,
     DocumentDetailsCharacteristicsComponent,
+    FileUploadComponent,
   ],
   imports: [
     CommonModule,
@@ -72,6 +75,7 @@ import { DocumentDetailsCharacteristicsComponent } from './pages/document-detail
     TableModule,
     TabViewModule,
     TooltipModule,
+    InputTextareaModule,
     StoreModule.forFeature(documentFeature),
     EffectsModule.forFeature([
       DocumentCreateEffects,

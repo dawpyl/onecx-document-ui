@@ -3,6 +3,13 @@ export default {
   preset: './jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory: './coverage/onecx-document-management-ui',
+  collectCoverageFrom: [
+    'src/**/*.ts',
+    '!src/**/*.spec.ts',
+    '!src/main.ts',
+    '!src/test-setup.ts',
+    '!src/app/shared/generated/**',
+  ],
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

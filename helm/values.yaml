@@ -25,14 +25,6 @@ app:
             READ: Read documents
             WRITE: Write document data
             DELETE: Delete document data
-            CREATE: Create document
-            EDIT: Edit document
-            SAVE: Update and save document
-            IMPORT: Import document
-            EXPORT: Export document
-            VIEW: View mode for document
-            SEARCH: Search document
-            BACK: Navigate back in details of document
     keycloak:
       client:
         enabled: true

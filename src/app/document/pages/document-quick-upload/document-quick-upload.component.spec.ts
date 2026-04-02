@@ -1,17 +1,25 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
-import { Store } from '@ngrx/store';
+import { provideRouter, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { LetDirective } from '@ngrx/component';
+import { Store, StoreModule } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { BreadcrumbService } from '@onecx/portal-integration-angular';
+import { provideAppStateServiceMock } from '@onecx/angular-integration-interface/mocks';
+import { BreadcrumbService, PortalCoreModule } from '@onecx/portal-integration-angular';
 import { TranslateTestingModule } from 'ngx-translate-testing';
+import { DataViewModule } from 'primeng/dataview';
 import { DocumentCreateOperationsActions } from '../../operations/document-create-operations.actions';
+import { FileUploadComponent } from '../../components/file-upload/file-upload.component';
+import { DocumentQuickUploadFormComponent } from './document-quick-upload-form/document-quick-upload-form.component';
 import { documentQuickUploadSelectors } from './document-quick-upload.selectors';
 import { DocumentQuickUploadComponent } from './document-quick-upload.component';
 import { initialState } from './document-quick-upload.reducers';
-import { ActivatedRoute, Router } from '@angular/router';
 import { PrimeIcons } from 'primeng/api';
+import { DropdownModule } from 'primeng/dropdown';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('DocumentQuickUploadComponent', () => {
   let component: DocumentQuickUploadComponent;
@@ -21,22 +29,38 @@ describe('DocumentQuickUploadComponent', () => {
 
   const mockActivatedRoute = { snapshot: { data: {} } };
 
+  /* eslint-disable @typescript-eslint/no-var-requires */
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DocumentQuickUploadComponent],
+      declarations: [
+        DocumentQuickUploadComponent,
+        DocumentQuickUploadFormComponent,
+        FileUploadComponent,
+      ],
       imports: [
-        RouterTestingModule,
+        PortalCoreModule,
+        LetDirective,
         ReactiveFormsModule,
-        TranslateTestingModule.withTranslations('en', {}),
+        DropdownModule,
+        DataViewModule,
+        StoreModule.forRoot({}),
+        TranslateTestingModule.withTranslations(
+          'en',
+          require('../../../../assets/i18n/en.json')
+        ),
+        NoopAnimationsModule,
       ],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        provideRouter([]),
         provideMockStore({
           initialState: { document: { quickUpload: initialState } },
         }),
         BreadcrumbService,
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
+        provideAppStateServiceMock(),
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
     store = TestBed.inject(MockStore);

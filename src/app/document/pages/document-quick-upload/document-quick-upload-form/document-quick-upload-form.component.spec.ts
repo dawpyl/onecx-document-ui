@@ -1,7 +1,8 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslateTestingModule } from 'ngx-translate-testing';
+import { DropdownModule } from 'primeng/dropdown';
+import { FileUploadComponent } from 'src/app/document/components/file-upload/file-upload.component';
 import { DocumentQuickUploadFormComponent } from './document-quick-upload-form.component';
 import { LifeCycleState } from 'src/app/shared/generated';
 
@@ -11,12 +12,12 @@ describe('DocumentQuickUploadFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DocumentQuickUploadFormComponent],
+      declarations: [DocumentQuickUploadFormComponent, FileUploadComponent],
       imports: [
         ReactiveFormsModule,
+        DropdownModule,
         TranslateTestingModule.withTranslations('en', {}),
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DocumentQuickUploadFormComponent);

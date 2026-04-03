@@ -1,4 +1,5 @@
 import { DocumentDetailsActions } from './document-details.actions';
+import { DocumentCreateOperationsActions } from '../../operations/document-create-operations.actions';
 import * as reducers from './document-details.reducers';
 
 describe('DocumentDetailsReducer', () => {
@@ -109,6 +110,44 @@ describe('DocumentDetailsReducer', () => {
       });
       const state = reducers.documentDetailsReducer(preState, action);
       expect(state.isSubmitting).toBe(false);
+    });
+  });
+
+  describe('requestDocumentUploadUrls', () => {
+    it('should set isSubmitting=true when requestDocumentUploadUrls is dispatched', () => {
+      const action = DocumentCreateOperationsActions.requestDocumentUploadUrls({
+        createdDocument: { id: '1' } as any,
+        uploadRequests: [],
+        files: [],
+      });
+      const state = reducers.documentDetailsReducer(
+        reducers.initialState,
+        action
+      );
+      expect(state.isSubmitting).toBe(true);
+    });
+  });
+
+  describe('documentCreationCompleted / documentCreationFinalStepFailed / attachmentUploadFailed', () => {
+    const completionActions = [
+      DocumentCreateOperationsActions.documentCreationCompleted({
+        documentId: 'doc-1',
+      }),
+      DocumentCreateOperationsActions.documentCreationFinalStepFailed({
+        documentId: 'doc-1',
+      }),
+      DocumentCreateOperationsActions.attachmentUploadFailed({
+        documentId: 'doc-1',
+        attachmentId: 'att-1',
+      }),
+    ];
+
+    completionActions.forEach((action) => {
+      it(`should set isSubmitting=false on ${action.type}`, () => {
+        const preState = { ...reducers.initialState, isSubmitting: true };
+        const state = reducers.documentDetailsReducer(preState, action);
+        expect(state.isSubmitting).toBe(false);
+      });
     });
   });
 });

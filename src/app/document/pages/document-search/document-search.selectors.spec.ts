@@ -5,6 +5,7 @@ import { take } from 'rxjs/operators';
 import { documentFeature } from '../../document.reducers';
 import * as selectors from './document-search.selectors';
 import { initialState } from './document-search.reducers';
+import { DocumentSearchActions } from './document-search.actions';
 
 describe('DocumentSearch selectors', () => {
   describe('selectResults projector', () => {
@@ -175,6 +176,40 @@ describe('DocumentSearch selectors', () => {
         .subscribe((vm) => {
           expect(Array.isArray(vm.availableDocumentTypes)).toBe(true);
           expect(Array.isArray(vm.avilableChannels)).toBe(true);
+          done();
+        });
+    });
+
+    it('should map document types and channels to SelectItems when store is populated with non-empty data', (done) => {
+      TestBed.configureTestingModule({
+        imports: [
+          StoreModule.forRoot({}),
+          StoreModule.forFeature(documentFeature),
+        ],
+      });
+      const store = TestBed.inject(Store);
+
+      store.dispatch(
+        DocumentSearchActions.availableDocTypesRecived({
+          types: [{ id: 't1', name: 'Invoice' }] as any,
+        })
+      );
+      store.dispatch(
+        DocumentSearchActions.availableChannelsRecived({
+          channels: [{ id: 'c1', name: 'Email' }] as any,
+        })
+      );
+
+      store
+        .select(selectors.selectDocumentSearchViewModel)
+        .pipe(take(1))
+        .subscribe((vm) => {
+          expect(vm.availableDocumentTypes).toEqual([
+            { label: 'Invoice', value: 't1' },
+          ]);
+          expect(vm.avilableChannels).toEqual([
+            { label: 'Email', value: 'c1' },
+          ]);
           done();
         });
     });

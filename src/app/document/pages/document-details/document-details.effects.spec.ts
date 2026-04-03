@@ -18,7 +18,10 @@ import { DocumentCreateOperationsActions } from '../../operations/document-creat
 import { DocumentDetailsActions } from './document-details.actions';
 import { DocumentDetailsEffects } from './document-details.effects';
 import { initialState } from './document-details.reducers';
-import { documentDetailsSelectors } from './document-details.selectors';
+import {
+  documentDetailsSelectors,
+  selectDocumentDetailsViewModel,
+} from './document-details.selectors';
 import { selectBackNavigationPossible } from 'src/app/shared/selectors/onecx.selectors';
 import { selectUrl } from 'src/app/shared/selectors/router.selectors';
 
@@ -971,6 +974,414 @@ describe('DocumentDetailsEffects', () => {
       });
 
       actions$.next(DocumentDetailsActions.deleteButtonClicked());
+    });
+  });
+
+  describe('cancelButtonClickedDirty$ null dialogResult branch', () => {
+    it('should dispatch cancelEditBackClicked when dialogResult is null', (done) => {
+      portalDialogService.openDialog.mockReturnValue(of(null as any));
+
+      effects.cancelButtonClickedDirty$.pipe(take(1)).subscribe((action) => {
+        expect(action).toEqual(DocumentDetailsActions.cancelEditBackClicked());
+        done();
+      });
+
+      actions$.next(
+        DocumentDetailsActions.cancelButtonClicked({ dirty: true })
+      );
+    });
+  });
+
+  describe('retryFileUpload$', () => {
+    const baseVm = {
+      details: {
+        id: 'doc-1',
+        name: 'Doc',
+        attachments: [],
+      } as any,
+    } as any;
+
+    beforeEach(() => {
+      store.overrideSelector(selectDocumentDetailsViewModel, baseVm);
+      store.refreshState();
+    });
+
+    it('should dispatch retryFileUploadCanceled when dialog is canceled', (done) => {
+      portalDialogService.openDialog.mockReturnValue(of(null as any));
+
+      effects.retryFileUpload$.pipe(take(1)).subscribe((action) => {
+        expect(action).toEqual(
+          DocumentDetailsActions.retryFileUploadCanceled()
+        );
+        done();
+      });
+
+      actions$.next(
+        DocumentDetailsActions.retryFileUpload({
+          attachmentId: 'att-1',
+          fileName: 'file.pdf',
+        })
+      );
+    });
+
+    it('should dispatch retryFileUploadCanceled when dialog button is not primary', (done) => {
+      portalDialogService.openDialog.mockReturnValue(
+        of({ button: 'secondary', result: null } as any)
+      );
+
+      effects.retryFileUpload$.pipe(take(1)).subscribe((action) => {
+        expect(action).toEqual(
+          DocumentDetailsActions.retryFileUploadCanceled()
+        );
+        done();
+      });
+
+      actions$.next(
+        DocumentDetailsActions.retryFileUpload({
+          attachmentId: 'att-1',
+          fileName: 'file.pdf',
+        })
+      );
+    });
+
+    it('should dispatch requestDocumentUploadUrls when dialog is confirmed with a file', (done) => {
+      const mockFile = new File(['data'], 'file.pdf', {
+        type: 'application/pdf',
+      });
+      portalDialogService.openDialog.mockReturnValue(
+        of({ button: 'primary', result: mockFile } as any)
+      );
+
+      effects.retryFileUpload$.pipe(take(1)).subscribe((action) => {
+        expect(action).toEqual(
+          DocumentCreateOperationsActions.requestDocumentUploadUrls({
+            createdDocument: baseVm.details,
+            uploadRequests: [{ fileName: 'file.pdf', attachmentId: 'att-1' }],
+            files: [
+              {
+                attachmentId: 'att-1',
+                file: mockFile,
+                fileName: 'file.pdf',
+              },
+            ],
+          })
+        );
+        done();
+      });
+
+      actions$.next(
+        DocumentDetailsActions.retryFileUpload({
+          attachmentId: 'att-1',
+          fileName: 'file.pdf',
+        })
+      );
+    });
+
+    it('should dispatch retryFileUploadCanceled when dialog button is primary but result is null', (done) => {
+      portalDialogService.openDialog.mockReturnValue(
+        of({ button: 'primary', result: null } as any)
+      );
+
+      effects.retryFileUpload$.pipe(take(1)).subscribe((action) => {
+        expect(action).toEqual(
+          DocumentDetailsActions.retryFileUploadCanceled()
+        );
+        done();
+      });
+
+      actions$.next(
+        DocumentDetailsActions.retryFileUpload({
+          attachmentId: 'att-1',
+          fileName: 'file.pdf',
+        })
+      );
+    });
+  });
+
+  describe('documentCreationSuccess$', () => {
+    it('should dispatch navigatedToDetailsPage when documentCreationCompleted id matches current document', (done) => {
+      store.overrideSelector(selectDocumentDetailsViewModel, {
+        details: { id: 'doc-1' } as any,
+      } as any);
+      store.refreshState();
+
+      effects.documentCreationSuccess$.pipe(take(1)).subscribe((action) => {
+        expect(action).toEqual(
+          DocumentDetailsActions.navigatedToDetailsPage({ id: 'doc-1' })
+        );
+        done();
+      });
+
+      actions$.next(
+        DocumentCreateOperationsActions.documentCreationCompleted({
+          documentId: 'doc-1',
+        })
+      );
+    });
+
+    it('should not emit when documentCreationCompleted id does not match current document', (done) => {
+      store.overrideSelector(selectDocumentDetailsViewModel, {
+        details: { id: 'doc-1' } as any,
+      } as any);
+      store.refreshState();
+
+      let emitted = false;
+      effects.documentCreationSuccess$.pipe(take(1)).subscribe(() => {
+        emitted = true;
+      });
+
+      actions$.next(
+        DocumentCreateOperationsActions.documentCreationCompleted({
+          documentId: 'doc-2',
+        })
+      );
+
+      setTimeout(() => {
+        expect(emitted).toBe(false);
+        done();
+      }, 50);
+    });
+
+    it('should not emit when details is null (vm.details?.id is undefined)', (done) => {
+      store.overrideSelector(selectDocumentDetailsViewModel, {
+        details: null,
+      } as any);
+      store.refreshState();
+
+      let emitted = false;
+      effects.documentCreationSuccess$.pipe(take(1)).subscribe(() => {
+        emitted = true;
+      });
+
+      actions$.next(
+        DocumentCreateOperationsActions.documentCreationCompleted({
+          documentId: 'doc-1',
+        })
+      );
+
+      setTimeout(() => {
+        expect(emitted).toBe(false);
+        done();
+      }, 50);
+    });
+  });
+
+  describe('getUpdateRequest null branches (via saveButtonClicked$)', () => {
+    const baseDetails = {
+      name: 'X',
+      status: 'DRAFT',
+      attachments: [],
+      characteristics: [],
+    } as any;
+
+    it('should omit specification when prevState.specification is undefined', (done) => {
+      const prevDetails = {
+        id: 'doc-1',
+        modificationCount: 0,
+        specification: undefined,
+        channel: { id: 'ch-1', name: 'email' },
+        attachments: [],
+        documentRelationships: [],
+        relatedParties: [],
+        categories: [],
+      } as any;
+      store.overrideSelector(
+        documentDetailsSelectors.selectDetails,
+        prevDetails
+      );
+      store.refreshState();
+      documentService.updateDocumentDetail.mockReturnValue(
+        of({ id: 'doc-1' } as any)
+      );
+
+      effects.saveButtonClicked$.pipe(take(2)).subscribe({
+        next: () => {},
+        complete: () => {
+          expect(documentService.updateDocumentDetail).toHaveBeenCalledWith(
+            'doc-1',
+            expect.objectContaining({ specification: undefined })
+          );
+          done();
+        },
+      });
+
+      actions$.next(
+        DocumentDetailsActions.saveButtonClicked({ details: baseDetails })
+      );
+    });
+
+    it('should set channel.id=undefined when prevState.channel is null', (done) => {
+      const prevDetails = {
+        id: 'doc-1',
+        modificationCount: 0,
+        channel: null,
+        attachments: [],
+        documentRelationships: [],
+        relatedParties: [],
+        categories: [],
+      } as any;
+      store.overrideSelector(
+        documentDetailsSelectors.selectDetails,
+        prevDetails
+      );
+      store.refreshState();
+      documentService.updateDocumentDetail.mockReturnValue(
+        of({ id: 'doc-1' } as any)
+      );
+
+      effects.saveButtonClicked$.pipe(take(2)).subscribe({
+        next: () => {},
+        complete: () => {
+          expect(documentService.updateDocumentDetail).toHaveBeenCalledWith(
+            'doc-1',
+            expect.objectContaining({
+              channel: expect.objectContaining({ id: undefined }),
+            })
+          );
+          done();
+        },
+      });
+
+      actions$.next(
+        DocumentDetailsActions.saveButtonClicked({ details: baseDetails })
+      );
+    });
+
+    it('should set mimeTypeId=undefined when attachment.mimeType is null', (done) => {
+      const prevDetails = {
+        id: 'doc-1',
+        modificationCount: 0,
+        channel: { id: 'ch-1', name: 'email' },
+        attachments: [{ id: 'att-1', mimeType: null, fileName: 'f.pdf' }],
+        documentRelationships: [],
+        relatedParties: [],
+        categories: [],
+      } as any;
+      store.overrideSelector(
+        documentDetailsSelectors.selectDetails,
+        prevDetails
+      );
+      store.refreshState();
+      documentService.updateDocumentDetail.mockReturnValue(
+        of({ id: 'doc-1' } as any)
+      );
+
+      const detailsWithAttachment = {
+        ...baseDetails,
+        attachments: [{ id: 'att-1', name: 'f.pdf', description: '' }],
+      } as any;
+
+      effects.saveButtonClicked$.pipe(take(2)).subscribe({
+        next: () => {},
+        complete: () => {
+          expect(documentService.updateDocumentDetail).toHaveBeenCalledWith(
+            'doc-1',
+            expect.objectContaining({
+              attachments: expect.arrayContaining([
+                expect.objectContaining({ mimeTypeId: undefined }),
+              ]),
+            })
+          );
+          done();
+        },
+      });
+
+      actions$.next(
+        DocumentDetailsActions.saveButtonClicked({
+          details: detailsWithAttachment,
+        })
+      );
+    });
+
+    it('should set characteristic id=undefined when val.id is null', (done) => {
+      const prevDetails = {
+        id: 'doc-1',
+        modificationCount: 0,
+        channel: { id: 'ch-1', name: 'email' },
+        attachments: [],
+        documentRelationships: [],
+        relatedParties: [],
+        categories: [],
+      } as any;
+      store.overrideSelector(
+        documentDetailsSelectors.selectDetails,
+        prevDetails
+      );
+      store.refreshState();
+      documentService.updateDocumentDetail.mockReturnValue(
+        of({ id: 'doc-1' } as any)
+      );
+
+      const detailsWithNullCharId = {
+        ...baseDetails,
+        characteristics: [{ id: null, name: 'color', value: 'red' }],
+      } as any;
+
+      effects.saveButtonClicked$.pipe(take(2)).subscribe({
+        next: () => {},
+        complete: () => {
+          expect(documentService.updateDocumentDetail).toHaveBeenCalledWith(
+            'doc-1',
+            expect.objectContaining({
+              characteristics: expect.arrayContaining([
+                expect.objectContaining({ id: undefined }),
+              ]),
+            })
+          );
+          done();
+        },
+      });
+
+      actions$.next(
+        DocumentDetailsActions.saveButtonClicked({
+          details: detailsWithNullCharId,
+        })
+      );
+    });
+
+    it('should set specification.name=undefined when prevState has specification but formValue.specification is falsy', (done) => {
+      const prevDetails = {
+        id: 'doc-1',
+        modificationCount: 0,
+        channel: { id: 'ch-1', name: 'email' },
+        attachments: [],
+        documentRelationships: [],
+        relatedParties: [],
+        categories: [],
+        specification: { name: 'existing-spec', specificationVersion: '1.0' },
+      } as any;
+      store.overrideSelector(
+        documentDetailsSelectors.selectDetails,
+        prevDetails
+      );
+      store.refreshState();
+      documentService.updateDocumentDetail.mockReturnValue(
+        of({ id: 'doc-1' } as any)
+      );
+
+      const detailsWithoutSpec = {
+        ...baseDetails,
+        specification: '',
+      } as any;
+
+      effects.saveButtonClicked$.pipe(take(2)).subscribe({
+        next: () => {},
+        complete: () => {
+          expect(documentService.updateDocumentDetail).toHaveBeenCalledWith(
+            'doc-1',
+            expect.objectContaining({
+              specification: expect.objectContaining({ name: undefined }),
+            })
+          );
+          done();
+        },
+      });
+
+      actions$.next(
+        DocumentDetailsActions.saveButtonClicked({
+          details: detailsWithoutSpec,
+        })
+      );
     });
   });
 });

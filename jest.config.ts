@@ -9,6 +9,10 @@ export default {
     '!src/main.ts',
     '!src/test-setup.ts',
     '!src/app/shared/generated/**',
+    '!src/**/*.module.ts',
+    '!src/**/*.routes.ts',
+    '!src/**/*.harness.ts',
+    '!src/app/document/document.selectors.ts',
   ],
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [

@@ -474,4 +474,35 @@ describe('DocumentSearchEffects', () => {
   });
 
   // <<SPEC-EXTENSIONS-MARKER-!!!-DO-NOT-REMOVE-!!!>>
+
+  describe('performSearch$ with null/undefined stream fields', () => {
+    it('should default stream to [] when API returns undefined stream', (done) => {
+      documentService.getDocumentByCriteria.mockReturnValue(
+        of({
+          stream: undefined,
+          size: undefined,
+          number: undefined,
+          totalElements: undefined,
+          totalPages: undefined,
+        }) as any
+      );
+
+      effects.performSearch$.pipe(take(1)).subscribe((action) => {
+        expect(action).toEqual(
+          DocumentSearchActions.documentSearchResultsReceived({
+            stream: [],
+            size: 0,
+            number: 0,
+            totalElements: 0,
+            totalPages: 0,
+          })
+        );
+        done();
+      });
+
+      actions$.next(
+        DocumentSearchActions.performSearch({ searchCriteria: {} })
+      );
+    });
+  });
 });

@@ -289,7 +289,7 @@ export class DocumentCreateOperationsEffects {
   private buildPresignedUrlRequests(
     document: DocumentDetail
   ): UploadAttachmentPresignedUrlRequest[] {
-    return document.attachments!.map((attachment) => ({
+    return (document.attachments ?? []).map((attachment) => ({
       fileName: attachment.fileName,
       attachmentId: attachment.id,
     }));

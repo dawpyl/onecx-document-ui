@@ -267,6 +267,36 @@ describe('DocumentCreateOperationsEffects', () => {
         DocumentCreateOperationsActions.ensureReferenceDataLoaded()
       );
     });
+
+    it('should dispatch loadReferenceDataFailed with null when thrown error has no message property', (done) => {
+      documentTypeService.getAllTypesOfDocument.mockReturnValue(
+        throwError(() => null)
+      );
+      mimeTypeService.getAllSupportedMimeTypes.mockReturnValue(of([]) as any);
+
+      store.overrideSelector(
+        documentCreateOperationsSelectors.selectAvailableDocumentTypes,
+        []
+      );
+      store.overrideSelector(
+        documentCreateOperationsSelectors.selectAvailableMimeTypes,
+        []
+      );
+      store.refreshState();
+
+      effects.ensureReferenceDataLoaded$.pipe(take(1)).subscribe((action) => {
+        expect(action).toEqual(
+          DocumentCreateOperationsActions.loadReferenceDataFailed({
+            error: null,
+          })
+        );
+        done();
+      });
+
+      actions$.next(
+        DocumentCreateOperationsActions.ensureReferenceDataLoaded()
+      );
+    });
   });
 
   describe('startDocumentCreation$', () => {
@@ -336,6 +366,27 @@ describe('DocumentCreateOperationsEffects', () => {
         DocumentCreateOperationsActions.documentCreatedSuccesfully({
           createdDocument,
           files,
+        })
+      );
+    });
+
+    it('should dispatch requestDocumentUploadUrls with empty files when createdDocument.attachments is undefined', (done) => {
+      const createdDocument = { id: 'doc-1', attachments: undefined } as any;
+
+      effects.documentCreatedSuccesfully$
+        .pipe(take(1))
+        .subscribe((action: any) => {
+          expect(action.type).toBe(
+            DocumentCreateOperationsActions.requestDocumentUploadUrls.type
+          );
+          expect(action.files).toEqual([]);
+          done();
+        });
+
+      actions$.next(
+        DocumentCreateOperationsActions.documentCreatedSuccesfully({
+          createdDocument,
+          files: [],
         })
       );
     });

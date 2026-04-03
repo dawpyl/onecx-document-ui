@@ -273,6 +273,45 @@ describe('DocumentQuickUploadComponent', () => {
     expect(component.isPaginatorVisible).toBe(false);
   });
 
+  it('should return PrimeIcons.FILE when attachment itself is null', () => {
+    expect(component.getAttachmentIcon(null as any)).toBe(PrimeIcons.FILE);
+  });
+
+  it('should dispatch startDocumentCreation with endDateTime=undefined when attachment validFor is undefined', () => {
+    const dispatchSpy = jest.spyOn(store, 'dispatch');
+    component.documentQuickUploadForm.setValue({
+      documentName: 'My Doc',
+      typeId: 'type-1',
+      channelname: 'email',
+      lifeCycleState: 'DRAFT',
+    });
+    component.attachmentArray = [
+      {
+        name: 'file.pdf',
+        description: '',
+        mimeTypeId: 'mime-1',
+        fileName: 'file.pdf',
+        validFor: undefined,
+        fileData: new File(['c'], 'file.pdf'),
+        isValid: true,
+      } as any,
+    ];
+
+    component.onSave();
+
+    expect(dispatchSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        docRequest: expect.objectContaining({
+          attachments: expect.arrayContaining([
+            expect.objectContaining({
+              validFor: { startDateTime: undefined, endDateTime: undefined },
+            }),
+          ]),
+        }),
+      })
+    );
+  });
+
   it('should return true for isPaginatorVisible when attachmentArray has items', () => {
     component.attachmentArray = [{ name: 'file.pdf' } as any];
     expect(component.isPaginatorVisible).toBe(true);

@@ -366,4 +366,19 @@ describe('DocumentDetailsComponent', () => {
       });
     });
   });
+
+  describe('onFileUploadRetry', () => {
+    it('should dispatch retryFileUpload with attachmentId and fileName when onFileUploadRetry is called', () => {
+      jest.spyOn(store, 'dispatch');
+
+      component.onFileUploadRetry({ id: 'att-1', fileName: 'test.pdf' });
+
+      expect(store.dispatch).toHaveBeenCalledWith(
+        DocumentDetailsActions.retryFileUpload({
+          attachmentId: 'att-1',
+          fileName: 'test.pdf',
+        })
+      );
+    });
+  });
 });

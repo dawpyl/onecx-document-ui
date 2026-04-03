@@ -216,5 +216,34 @@ describe('DocumentCreateAttachmentsComponent', () => {
 
       expect(component.isFieldInvalid(form, 'nonExistentField')).toBe(false);
     });
+
+    it('should return false when control is invalid but not yet touched', () => {
+      const file = new File(['c'], 'a.pdf', { type: 'application/pdf' });
+      component.onFileSelected(file);
+      const form = component.attachmentForms.at(0);
+      form.controls.name.setValue('');
+      // control is invalid (required) but not touched
+
+      expect(component.isFieldInvalid(form, 'name')).toBe(false);
+    });
+  });
+
+  describe('addFormEntry mimeType label fallback', () => {
+    it('should use draft.mimeTypeId as label when mimeType is not found in supportedMimeTypes', () => {
+      component.attachments = [
+        {
+          name: 'doc.pdf',
+          description: null,
+          mimeTypeId: 'unknown/type',
+          validForEnd: null,
+          fileName: 'doc.pdf',
+          file: new File(['c'], 'doc.pdf'),
+        },
+      ];
+      component.ngOnInit();
+
+      const form = component.attachmentForms.at(0);
+      expect(form.controls.mimeTypeName.value).toBe('unknown/type');
+    });
   });
 });

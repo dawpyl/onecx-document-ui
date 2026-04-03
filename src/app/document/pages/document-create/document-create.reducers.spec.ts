@@ -295,3 +295,13 @@ describe('DocumentCreateReducer', () => {
     });
   });
 });
+
+describe('DocumentCreateReducer - additional branch coverage', () => {
+  it('should set error=null when loadReferenceDataFailed is dispatched with error=null', () => {
+    const action = DocumentCreateOperationsActions.loadReferenceDataFailed({
+      error: null,
+    });
+    const state = reducers.documentCreateReducer(reducers.initialState, action);
+    expect(state.error).toBeNull();
+  });
+});

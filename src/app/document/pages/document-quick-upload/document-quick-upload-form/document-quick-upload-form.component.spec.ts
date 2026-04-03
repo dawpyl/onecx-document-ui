@@ -216,4 +216,40 @@ describe('DocumentQuickUploadFormComponent', () => {
 
     expect(emitSpy).not.toHaveBeenCalled();
   });
+
+  it('should not process files when dropFile is called with null dataTransfer', () => {
+    const emitSpy = jest.spyOn(component.attchmentList, 'emit');
+    const event = {
+      preventDefault: jest.fn(),
+      dataTransfer: null,
+    } as any;
+
+    component.dropFile(event);
+
+    expect(emitSpy).not.toHaveBeenCalled();
+  });
+
+  it('should initialize supportedMimeType to empty array when it is null during file selection', () => {
+    (component as any).supportedMimeType = null;
+    const file = new File(['content'], 'doc.pdf', { type: 'application/pdf' });
+
+    component.onFilesSelected([file]);
+
+    expect(component.attachmentArray.length).toBe(1);
+  });
+
+  it('should treat file as invalid when fileData.size is undefined (null-coalesces to 0)', () => {
+    component.supportedMimeType = [
+      { label: 'application/pdf', value: 'mime-1' },
+    ];
+    const fileWithNoSize = {
+      name: 'doc.pdf',
+      size: undefined,
+      type: 'application/pdf',
+    } as unknown as File;
+
+    (component as any).enterDataToListView(fileWithNoSize);
+
+    expect(component.attachmentArray[0].isValid).toBe(false);
+  });
 });

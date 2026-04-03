@@ -124,5 +124,15 @@ describe('FileUploadComponent', () => {
 
       expect(emitted).toHaveLength(0);
     });
+
+    it('should not emit when input.files is null', () => {
+      const emitted: File[] = [];
+      component.fileSelected.subscribe((f) => emitted.push(f));
+
+      const event = { target: { files: null } } as any;
+      component.onFileInputChange(event);
+
+      expect(emitted).toHaveLength(0);
+    });
   });
 });

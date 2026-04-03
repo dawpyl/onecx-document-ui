@@ -91,4 +91,20 @@ describe('DocumentDetailsAttachmentListComponent', () => {
       );
     });
   });
+
+  describe('onRetryUploadClicked', () => {
+    it('should emit retryUpload event with id and fileName when onRetryUploadClicked is called', () => {
+      const emitted: { id: string; fileName: string }[] = [];
+      component.retryUpload.subscribe((v) => emitted.push(v));
+
+      const group = buildAttachmentFormGroup({
+        id: 'att-5',
+        fileName: 'document.pdf',
+      });
+      component.onRetryUploadClicked(group);
+
+      expect(emitted).toHaveLength(1);
+      expect(emitted[0]).toEqual({ id: 'att-5', fileName: 'document.pdf' });
+    });
+  });
 });

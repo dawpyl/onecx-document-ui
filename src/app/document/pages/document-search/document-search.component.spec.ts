@@ -499,22 +499,22 @@ describe('DocumentSearchComponent', () => {
   });
 
   describe('buildLifeCycleStates', () => {
-    it('should build SelectItem[] from LifeCycleState enum keys', () => {
+    it('should build SelectItem[] with label as enum key name and value as enum value', () => {
       const states = component.lifeCycleStates;
       expect(states.length).toBeGreaterThan(0);
       states.forEach((item) => {
         expect(item).toHaveProperty('label');
         expect(item).toHaveProperty('value');
-        expect(item.label).toBe(item.value);
+        expect(item.value).toBe(item.value.toUpperCase());
       });
     });
 
-    it('should include Draft, Review, Released, Archived state keys', () => {
+    it('should include DRAFT, REVIEW, RELEASED, ARCHIVED as values', () => {
       const values = component.lifeCycleStates.map((s) => s.value);
-      expect(values).toContain('Draft');
-      expect(values).toContain('Review');
-      expect(values).toContain('Released');
-      expect(values).toContain('Archived');
+      expect(values).toContain('DRAFT');
+      expect(values).toContain('REVIEW');
+      expect(values).toContain('RELEASED');
+      expect(values).toContain('ARCHIVED');
     });
   });
 

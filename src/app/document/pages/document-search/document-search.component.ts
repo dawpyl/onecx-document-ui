@@ -141,9 +141,9 @@ export class DocumentSearchComponent implements OnInit {
   }
 
   private buildLifeCycleStates(): SelectItem[] {
-    return Object.keys(LifeCycleState).map((state) => ({
-      label: state,
-      value: state,
+    return Object.keys(LifeCycleState).map((key) => ({
+      label: key,
+      value: LifeCycleState[key as keyof typeof LifeCycleState],
     }));
   }
 

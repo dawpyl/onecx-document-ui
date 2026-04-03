@@ -47,11 +47,14 @@ describe('documentSearchCriteriasSchema', () => {
     expect(result.success).toBe(false);
   });
 
-  it('should fail when lifeCycleState is a string instead of array', () => {
+  it('should preprocess lifeCycleState from string to array', () => {
     const result = documentSearchCriteriasSchema.safeParse({
       lifeCycleState: 'DRAFT',
     });
-    expect(result.success).toBe(false);
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.lifeCycleState).toEqual(['DRAFT']);
+    }
   });
 
   it('should parse lifeCycleState as an array of strings', () => {
@@ -61,6 +64,26 @@ describe('documentSearchCriteriasSchema', () => {
     expect(result.success).toBe(true);
     if (result.success) {
       expect(result.data.lifeCycleState).toEqual(['DRAFT', 'REVIEW']);
+    }
+  });
+
+  it('should preprocess documentTypeId from string to array', () => {
+    const result = documentSearchCriteriasSchema.safeParse({
+      documentTypeId: 'type-1',
+    });
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.documentTypeId).toEqual(['type-1']);
+    }
+  });
+
+  it('should parse documentTypeId as an array of strings', () => {
+    const result = documentSearchCriteriasSchema.safeParse({
+      documentTypeId: ['type-1', 'type-2'],
+    });
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.documentTypeId).toEqual(['type-1', 'type-2']);
     }
   });
 });

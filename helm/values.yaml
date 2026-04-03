@@ -1,7 +1,7 @@
 app:
   name: ui
   image:
-    repository: onecx/onecx-document-management-ui
+    repository: onecx/onecx-document-ui
   routing:
     enabled: true
     path: /mfe/onecxDocumentManagementUi/
@@ -17,6 +17,15 @@ app:
           technology: WEBCOMPONENTMODULE
           remoteName: onecx-document-management-ui
           tagName: onecx-document-management-ui-webcomponent
+          endpoints:
+            - name: Document search
+              path: /document-management
+            - name: Document quick upload
+              path: /document-management/quick-upload
+            - name: Document create
+              path: /document-management/create-document
+            - name: Document details
+              path: /document-management/details/{documentId}
     permission:
       enabled: true
       spec:

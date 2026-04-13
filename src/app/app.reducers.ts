@@ -11,8 +11,8 @@ export const reducers: ActionReducerMap<State> = {
 };
 
 export function localStorageSyncReducer(
-  reducer: ActionReducer<any>
-): ActionReducer<any> {
+  reducer: ActionReducer<any> // eslint-disable-line @typescript-eslint/no-explicit-any
+): ActionReducer<any> { // eslint-disable-line @typescript-eslint/no-explicit-any
   return localStorageSync({
     keys: [
       {
@@ -30,7 +30,7 @@ export function localStorageSyncReducer(
     ],
     mergeReducer: lazyLoadingMergeReducer,
     rehydrate: true,
-    storageKeySerializer: (key) => 'document.${key}',
+    storageKeySerializer: (key) => 'document.${key}', // eslint-disable-line @typescript-eslint/no-unused-vars
   })(reducer);
 }
 

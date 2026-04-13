@@ -1,0 +1,62 @@
+<ocx-portal-page
+  permission="DOCUMENT#READ"
+  [helpArticleId]="'DOCUMENT_SEARCH.HELP_ARTICLE_ID' | translate"
+  *ngrxLet="viewModel$; let vm"
+>
+  <ocx-loading-indicator
+    *ngIf="vm.searchLoadingIndicator"
+  ></ocx-loading-indicator>
+  <ocx-search-header
+    ocxAdvanced
+    [headline]="'DOCUMENT_SEARCH.HEADER' | translate"
+    [subheader]="'DOCUMENT_SEARCH.SUB_HEADER' | translate"
+    (searched)="search(documentSearchFormGroup)"
+    (resetted)="resetSearch()"
+    [manualBreadcrumbs]="true"
+    [actions]="(headerActions$ | async) ?? []"
+    (componentStateChanged)="searchHeaderComponentStateChanged($event)"
+    [viewMode]="vm.searchHeaderComponentState?.activeViewMode ?? 'basic'"
+    [attr.aria-label]="'DOCUMENT_SEARCH.ARIA-LABEL' | translate"
+  >
+    <app-document-search-criteria
+      [formGroup]="documentSearchFormGroup"
+      [viewMode]="vm.searchHeaderComponentState?.activeViewMode ?? 'basic'"
+      [availableDocumentTypes]="vm.availableDocumentTypes"
+      [availableChannels]="vm.avilableChannels"
+      [lifeCycleStates]="lifeCycleStates"
+    ></app-document-search-criteria>
+  </ocx-search-header>
+  <ocx-content-container layout="horizontal">
+    <ocx-content class="w-full">
+      <ocx-interactive-data-view
+        (viewItem)="details($event)"
+        viewPermission="DOCUMENT#READ"
+        [data]="vm.results"
+        [columns]="vm.columns"
+        [emptyResultsMessage]="'DOCUMENT_SEARCH.EMPTY_RESULTS' | translate"
+        (componentStateChanged)="resultComponentStateChanged($event)"
+        [layout]="vm.resultComponentState?.layout ?? 'table'"
+        [displayedColumns]="vm.resultComponentState?.displayedColumns ?? []"
+        [supportedViewLayouts]="['list', 'table']"
+        [page]="vm.resultComponentState?.activePage ?? 0"
+        [pageSize]="vm.resultComponentState?.pageSize"
+        [filters]="vm.resultComponentState?.filters ?? []"
+        [sortField]="vm.resultComponentState?.sorting?.sortColumn"
+        [sortDirection]="
+          vm.resultComponentState?.sorting?.sortDirection ??
+          defaultDataSortDirection
+        "
+        [selectedRows]="vm.resultComponentState?.selectedRows ?? []"
+        [defaultGroupKey]="vm.resultComponentState?.activeColumnGroupKey ?? ''"
+        [actionColumnPosition]="
+          vm.resultComponentState?.actionColumnConfig?.position ?? 'right'
+        "
+        [frozenActionColumn]="
+          vm.resultComponentState?.actionColumnConfig?.frozen ?? false
+        "
+        [attr.aria-label]="'DOCUMENT_SEARCH.RESULTS.NAME' | translate"
+      >
+      </ocx-interactive-data-view>
+    </ocx-content>
+  </ocx-content-container>
+</ocx-portal-page>

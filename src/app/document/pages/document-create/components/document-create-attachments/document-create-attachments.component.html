@@ -1,0 +1,163 @@
+<div class="grid p-fluid mt-2" errorTailor>
+  <!-- Left column: attachment list -->
+  <div class="col-4">
+    <div class="flex justify-content-between align-items-center mb-2">
+      <span class="font-semibold">{{
+        'DOCUMENT_CREATE.ATTACHMENTS.LIST_TITLE' | translate
+      }}</span>
+    </div>
+
+    <div
+      *ngFor="let form of attachmentForms.controls; let i = index"
+      class="flex align-items-center justify-content-between p-2 mb-1 cursor-pointer border-round"
+      [class.surface-100]="i === selectedIndex"
+      role="button"
+      tabindex="0"
+      (click)="selectAttachment(i)"
+      (keyup.enter)="selectAttachment(i)"
+    >
+      <span
+        class="text-sm overflow-hidden white-space-nowrap text-overflow-ellipsis"
+      >
+        {{
+          form.controls.name.value ||
+            form.controls.mimeTypeName.value ||
+            ('DOCUMENT_CREATE.ATTACHMENTS.UNNAMED' | translate)
+        }}
+      </span>
+      <button
+        pButton
+        type="button"
+        icon="pi pi-trash"
+        class="p-button-text p-button-danger p-button-sm ml-2"
+        [attr.aria-label]="'DOCUMENT_CREATE.ATTACHMENTS.REMOVE' | translate"
+        (click)="removeAttachment(i); $event.stopPropagation()"
+      ></button>
+    </div>
+
+    <div
+      *ngIf="attachmentForms.length === 0"
+      class="text-sm text-color-secondary mt-2"
+    >
+      {{ 'DOCUMENT_CREATE.ATTACHMENTS.EMPTY' | translate }}
+    </div>
+  </div>
+
+  <!-- Right column: metadata form + file upload -->
+  <div
+    class="col-6 col-offset-2"
+    *ngIf="selectedForm as form; else noSelection"
+    [formGroup]="form"
+  >
+    <div class="grid p-fluid">
+      <!-- name: full width -->
+      <div class="col-12">
+        <span class="p-float-label" controlErrorAnchor>
+          <input
+            pInputText
+            id="attachmentName"
+            type="text"
+            class="w-full"
+            [ngClass]="{ 'ng-invalid ng-dirty': isFieldInvalid(form, 'name') }"
+            formControlName="name"
+          />
+          <label for="attachmentName" class="required-label">
+            {{ 'DOCUMENT_CREATE.ATTACHMENTS.FORM.NAME.LABEL' | translate }}
+          </label>
+        </span>
+      </div>
+
+      <!-- mimeType (disabled) + validity (calendar) -->
+      <div class="col-6 mt-2">
+        <span class="p-float-label">
+          <input
+            pInputText
+            id="mimeTypeName"
+            type="text"
+            class="w-full"
+            formControlName="mimeTypeName"
+            [attr.disabled]="true"
+          />
+          <label for="mimeTypeName">
+            {{ 'DOCUMENT_CREATE.ATTACHMENTS.FORM.MIME_TYPE.LABEL' | translate }}
+          </label>
+        </span>
+      </div>
+
+      <div class="col-6 mt-2">
+        <span class="p-float-label">
+          <p-calendar
+            inputId="validForEnd"
+            class="w-full"
+            formControlName="validForEnd"
+            dateFormat="yy-mm-dd"
+            [showIcon]="true"
+            appendTo="body"
+          ></p-calendar>
+          <label for="validForEnd">
+            {{ 'DOCUMENT_CREATE.ATTACHMENTS.FORM.VALIDITY.LABEL' | translate }}
+          </label>
+        </span>
+      </div>
+
+      <!-- description: textarea -->
+      <div class="col-12 mt-2">
+        <span class="p-float-label">
+          <textarea
+            pInputTextarea
+            id="attachmentDescription"
+            class="w-full"
+            rows="3"
+            formControlName="description"
+          ></textarea>
+          <label for="attachmentDescription">
+            {{
+              'DOCUMENT_CREATE.ATTACHMENTS.FORM.DESCRIPTION.LABEL' | translate
+            }}
+          </label>
+        </span>
+      </div>
+
+      <!-- file upload widget -->
+      <div class="col-12 mt-2">
+        <app-file-upload
+          [multiple]="false"
+          (fileSelected)="onFileSelected($event)"
+        ></app-file-upload>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noSelection>
+    <div
+      class="col-6 col-offset-2 flex align-items-center justify-content-center"
+    >
+      <app-file-upload
+        class="w-full"
+        [multiple]="false"
+        (fileSelected)="onFileSelected($event)"
+      ></app-file-upload>
+    </div>
+  </ng-template>
+
+  <div
+    class="col-6 col-offset-6 column-gap-2 flex justify-content-between mt-3"
+  >
+    <button
+      pButton
+      type="button"
+      class="p-button-secondary"
+      [label]="'DOCUMENT_DETAILS.GENERAL.BACK' | translate"
+      [attr.aria-label]="'DOCUMENT_DETAILS.GENERAL.BACK' | translate"
+      (click)="onBack()"
+    ></button>
+
+    <button
+      pButton
+      type="button"
+      [label]="'DOCUMENT_DETAILS.GENERAL.NEXT' | translate"
+      [attr.aria-label]="'DOCUMENT_DETAILS.GENERAL.NEXT' | translate"
+      (click)="onNext()"
+    ></button>
+  </div>
+</div>

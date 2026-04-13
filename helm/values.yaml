@@ -1,0 +1,36 @@
+app:
+  name: ui
+  image:
+    repository: onecx/onecx-document-ui
+  routing:
+    enabled: true
+    path: /mfe/onecxDocumentManagementUi/
+  operator:
+    microfrontend:
+      enabled: true
+      specs:
+        main:
+          exposedModule: ./OnecxDocumentManagementUiModule
+          description: OneCX OnecxDocumentManagementUi Module
+          note: OneCX OnecxDocumentManagementUi UI module auto import via MF operator
+          type: MODULE
+          technology: WEBCOMPONENTMODULE
+          remoteName: onecx-document-management-ui
+          tagName: onecx-document-management-ui-webcomponent
+          endpoints:
+            - name: Document search
+              path: /document-management
+            - name: Document quick upload
+              path: /document-management/quick-upload
+            - name: Document create
+              path: /document-management/create-document
+            - name: Document details
+              path: /document-management/details/{documentId}
+    permission:
+      enabled: true
+      spec:
+        permissions:
+          DOCUMENT:
+            READ: Read documents
+            WRITE: Write document data
+            DELETE: Delete document data

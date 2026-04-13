@@ -1,0 +1,343 @@
+{
+  "DOCUMENT_DETAILS": {
+    "HELP_ARTICLE_ID": "Help Article",
+    "BREADCRUMB": "Details",
+    "HEADER": "Document Details",
+    "ARIA-LABEL": "Page Header with Details",
+    "SUB_HEADER": "Display of Document Details",
+    "ERROR_MESSAGES": {
+      "DETAILS_LOADING_FAILED": "Loading details failed."
+    },
+    "GENERAL": {
+      "BACK": "Back",
+      "MORE": "More",
+      "EDIT": " Edit",
+      "DELETE": "Delete",
+      "CANCEL": "Cancel",
+      "SAVE": "Save",
+      "NEXT": "Next",
+      "SUBMIT": "Submit"
+    },
+    "FORM": {
+      "ID": {
+        "LABEL": "ID",
+        "ARIA-LABEL": "ID",
+        "TOOLTIP": "ID"
+      },
+      "NAME": {
+        "LABEL": "Name",
+        "ARIA-LABEL": "Name",
+        "TOOLTIP": "Name"
+      },
+      "TYPE": {
+        "LABEL": "Type",
+        "ARIA-LABEL": "Type",
+        "TOOLTIP": "Type"
+      },
+      "VERSION": {
+        "LABEL": "Version",
+        "ARIA-LABEL": "Version",
+        "TOOLTIP": "Version"
+      },
+      "CHANNEL": {
+        "LABEL": "Channel",
+        "ARIA-LABEL": "Channel",
+        "TOOLTIP": "Channel"
+      },
+      "SPECIFICATION": {
+        "LABEL": "Specification",
+        "ARIA-LABEL": "Specification",
+        "TOOLTIP": "Specification"
+      },
+      "STATUS": {
+        "LABEL": "Status",
+        "ARIA-LABEL": "Status",
+        "TOOLTIP": "Status"
+      },
+      "DESCRIPTION": {
+        "LABEL": "Description",
+        "ARIA-LABEL": "Description",
+        "TOOLTIP": "Description"
+      },
+      "INVOLVEMENT": {
+        "LABEL": "Involvement",
+        "ARIA-LABEL": "Involvement",
+        "TOOLTIP": "Involvement"
+      },
+      "OBJECT_REFERENCE_TYPE": {
+        "LABEL": "Reference Type",
+        "ARIA-LABEL": "Reference Type",
+        "TOOLTIP": "Reference Type"
+      },
+      "OBJECT_REFERENCE_ID": {
+        "LABEL": "Reference ID",
+        "ARIA-LABEL": "Reference ID",
+        "TOOLTIP": "Reference ID"
+      }
+    },
+    "SECTIONS": {
+      "DETAILS": "Details",
+      "RELATED_OBJECT": "Related Object",
+      "ATTACHMENTS": "Attachments",
+      "CHARACTERISTICS": "Characteristics"
+    },
+    "ATTACHMENTS": {
+      "EMPTY": "No attachments available.",
+      "COLUMNS": {
+        "NAME": "Name",
+        "DESCRIPTION": "Description",
+        "SIZE": "Size",
+        "MIME_TYPE": "Mime Type",
+        "UPLOAD_STATUS": "Upload Status",
+        "ACTIONS": "Actions"
+      },
+      "ACTIONS": {
+        "DOWNLOAD": "Download"
+      },
+      "STATUS": {
+        "UPLOADED": "Uploaded",
+        "FAILED": "Failed"
+      }
+    },
+    "CHARACTERISTICS": {
+      "EMPTY": "No characteristics defined",
+      "COLUMNS": {
+        "NAME": "Name",
+        "VALUE": "Value",
+        "ACTIONS": "Actions"
+      }
+    },
+    "CANCEL": {
+      "HEADER": "Confirm cancel",
+      "MESSAGE": "Please confirm that you want to cancel editing and reset changes.",
+      "CONFIRM": "Confirm"
+    },
+    "UPDATE": {
+      "SUCCESS": "Update successful",
+      "ERROR": "Update failed",
+      "FORM": {
+        "SAVE": "Save",
+        "CANCEL": "Cancel"
+      },
+      "HEADER": "Update Document"
+    },
+    "DELETE": {
+      "HEADER": "Delete Document",
+      "MESSAGE": "Please confirm that you want to delete this Document.",
+      "CONFIRM": "Confirm",
+      "CANCEL": "Cancel",
+      "SUCCESS": "Document deleted successfully",
+      "ERROR": "Could not delete Document"
+    },
+    "DIALOGS": {
+      "RETRY_FILE_UPLOAD": {
+        "TITLE": "Upload file",
+        "SAVE_BTN": "Confirm",
+        "FILENAME_MISMATCH": "Please upload file with required file name {{fileName}}"
+      }
+    }
+  },
+  "DOCUMENT_SEARCH": {
+    "HEADER": "Document Search",
+    "SUB_HEADER": "Searching and displaying of Document",
+    "HELP_ARTICLE_ID": "Help Article",
+    "EMPTY_RESULTS": "No results.",
+    "BREADCRUMB": "Search",
+    "DIAGRAM": {
+      "SUM": "Total",
+      "NAME": "Diagram for Search Results"
+    },
+    "HEADER_ACTIONS": {
+      "QUICK_UPLOAD": "Quick upload",
+      "CREATE_NEW_DOCUMENT": "Create new document",
+      "EXPORT_ALL": "Export all",
+      "SHOW_CHART": "Show chart",
+      "HIDE_CHART": "Hide chart",
+      "CREATE_SEARCH_CONFIG": "Create search configuration",
+      "UPDATE_SEARCH_CONFIG": "Update search configuration",
+      "DIALOG_CONFIRM": "Confirm",
+      "DIALOG_CANCEL": "Cancel"
+    },
+    "ERROR_MESSAGES": {
+      "SEARCH_RESULTS_LOADING_FAILED": "Loading search results failed.",
+      "SEARCH_CONFIG_CREATION_FAILED": "Create search configuration failed.",
+      "SEARCH_CONFIG_UPDATE_FAILED": "Update search configuration failed.",
+      "SEARCH_CONFIGS_LOADING_FAILED": "Loading search configurations failed."
+    },
+    "ARIA-LABEL": "Page Header with Search",
+    "PREDEFINED_GROUP": {
+      "DEFAULT": "Default",
+      "EXTENDED": "Extended",
+      "FULL": "Full"
+    },
+    "RESULTS": {
+      "CHANGE_ME": "Change Me",
+      "NAME": "Search Results",
+      "NAME_COLUMN": "Name",
+      "TYPE_NAME_COLUMN": "Type",
+      "STATE_COLUMN": "State",
+      "VERSION_COLUMN": "Version",
+      "USER_COLUMN": "User",
+      "CREATION_COLUMN": "Created",
+      "MODIFICATION_COLUMN": "Modified"
+    },
+    "CRITERIA": {
+      "ID": {
+        "LABEL": "ID",
+        "ARIA-LABEL": "ID",
+        "TOOLTIP": "ID"
+      },
+      "NAME": {
+        "LABEL": "Name",
+        "ARIA-LABEL": "Name",
+        "TOOLTIP": "Name"
+      },
+      "LIFE_CYCLE_STATE": {
+        "LABEL": "Life Cycle State",
+        "ARIA-LABEL": "Life Cycle State",
+        "TOOLTIP": "Life Cycle State"
+      },
+      "DOCUMENT_TYPE_ID": {
+        "LABEL": "Document Type",
+        "ARIA-LABEL": "Document Type",
+        "TOOLTIP": "Document Type"
+      },
+      "CHANNEL_NAME": {
+        "LABEL": "Channel",
+        "ARIA-LABEL": "Channel",
+        "TOOLTIP": "Channel"
+      },
+      "START_DATE": {
+        "LABEL": "Start Date",
+        "ARIA-LABEL": "Start Date",
+        "TOOLTIP": "Start Date"
+      },
+      "END_DATE": {
+        "LABEL": "End Date",
+        "ARIA-LABEL": "End Date",
+        "TOOLTIP": "End Date"
+      },
+      "CREATE_BY": {
+        "LABEL": "Created By",
+        "ARIA-LABEL": "Created By",
+        "TOOLTIP": "Created By"
+      },
+      "OBJECT_REFERENCE_ID": {
+        "LABEL": "Object Reference ID",
+        "ARIA-LABEL": "Object Reference ID",
+        "TOOLTIP": "Object Reference ID"
+      },
+      "OBJECT_REFERENCE_TYPE": {
+        "LABEL": "Object Reference Type",
+        "ARIA-LABEL": "Object Reference Type",
+        "TOOLTIP": "Object Reference Type"
+      }
+    }
+  },
+  "DOCUMENT_QUICK_UPLOAD": {
+    "HEADER": "Quick Upload",
+    "BASIC_FIELDS": {
+      "DOCUMENT_NAME": "Document Name",
+      "DOCUMENT_TYPE": "Document Type",
+      "DOCUMENT_CHANNEL": "Channel",
+      "DOCUMENT_STATUS": "Status"
+    },
+    "ATTACHMENTS": {
+      "DRAG_DROP": "Drag and drop files here",
+      "OR": "or",
+      "CHOOSE_BTN_TITLE": "Choose Files",
+      "ALLOWED_FILETYPE_MESSAGE": "Allowed file types: Audio, Image, Video, Excel, Word, PowerPoint, PDF",
+      "ALLOWED_FILESIZE_MESSAGE": "Max file size: 2 MB",
+      "FILE_SIZE_LIMIT": "File exceeds the maximum size limit",
+      "UPLOAD_SUCCESS": "File uploaded successfully",
+      "UPLOAD_ERROR": "File upload failed",
+      "NAME": "Attachment Name",
+      "SIZE": "File Size",
+      "TYPE": "File Type",
+      "UPLOAD_STATUS": "Upload Status",
+      "NO_DATA": "No attachments"
+    },
+    "CREATE_SUCCESS": "Document created successfully",
+    "CREATE_ERROR": "Failed to create document",
+    "FORM": {
+      "SPECIAL_CHARACTER_ERROR": "Special characters are not allowed"
+    },
+    "CANCEL_MODAL": {
+      "HEADER": "Cancel Document Creation",
+      "CANCEL_CONFIRM_MESSAGE": "Are you sure you want to cancel document creation? All unsaved changes will be lost.",
+      "CONFIRM": "Your changes will not be saved."
+    }
+  },
+  "DOCUMENT_CREATE": {
+    "HEADER": "Create Document",
+    "BREADCRUMB": "Create",
+    "GENERAL": {
+      "SUBMIT": "Submit"
+    },
+    "STEPPER": {
+      "STEP": "Step",
+      "DETAILS": "Details",
+      "ATTACHMENTS": "Attachments",
+      "CHARACTERISTICS": "Characteristics"
+    },
+    "ATTACHMENTS": {
+      "LIST_TITLE": "Attachments",
+      "UNNAMED": "Unnamed attachment",
+      "REMOVE": "Remove attachment",
+      "EMPTY": "No attachments added yet.",
+      "FORM": {
+        "NAME": {
+          "LABEL": "Name"
+        },
+        "MIME_TYPE": {
+          "LABEL": "MIME Type"
+        },
+        "VALIDITY": {
+          "LABEL": "Valid to"
+        },
+        "DESCRIPTION": {
+          "LABEL": "Description"
+        }
+      },
+      "ERROR_MESSAGES": {
+        "MIME_TYPE_NOT_SUPPORTED": "Selected file type is not supported."
+      }
+    },
+    "CHARACTERISTICS": {
+      "EMPTY": "No characteristics defined.",
+      "COLUMNS": {
+        "NAME": "Name",
+        "VALUE": "Value",
+        "ACTIONS": "Actions"
+      },
+      "ACTIONS": {
+        "REMOVE": "Remove characteristic"
+      }
+    },
+    "SUCCESS_MESSAGES": {
+      "CREATE_SUCCESS": "Document created successfully."
+    },
+    "ERROR_MESSAGES": {
+      "CREATE_ERROR": "Document creation failed.",
+      "SUBMIT_VALIDATION": "Please complete required document details before submit."
+    }
+  },
+  "FILE_UPLOAD": {
+    "DRAG_DROP": "Drag and drop files here",
+    "OR": "or",
+    "CHOOSE_BTN": "Choose file"
+  },
+  "GENERAL": {
+    "CANCEL": "Cancel",
+    "CREATE": "Create",
+    "PROCESSING": "Processing",
+    "SUCCESS": "Success",
+    "FAILED": "Failed",
+    "REMOVE": "Remove",
+    "NO": "No",
+    "YES": "Yes"
+  },
+  "OnecxDocumentManagementUi": {
+    "ARIA-LABEL": "OnecxDocumentManagementUi App"
+  }
+}

@@ -1,0 +1,28 @@
+<div
+  class="file-upload-area flex flex-column align-items-center gap-2 p-3 border-1 border-round border-dashed"
+  (dragover)="allowDrop($event)"
+  (drop)="onDrop($event)"
+>
+  <span>{{ 'FILE_UPLOAD.DRAG_DROP' | translate }}</span>
+  <span>{{ 'FILE_UPLOAD.OR' | translate }}</span>
+
+  <div class="upload-btn-wrapper">
+    <button
+      pButton
+      type="button"
+      icon="pi pi-plus"
+      iconPos="left"
+      class="w-full"
+      [label]="'FILE_UPLOAD.CHOOSE_BTN' | translate"
+      [attr.aria-label]="'FILE_UPLOAD.CHOOSE_BTN' | translate"
+      [disabled]="disabled"
+    ></button>
+    <input
+      type="file"
+      [multiple]="multiple"
+      [disabled]="disabled"
+      (change)="onFileInputChange($event)"
+      title
+    />
+  </div>
+</div>

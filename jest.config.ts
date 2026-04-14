@@ -35,4 +35,16 @@ export default {
     '<rootDir>/src/**/__tests__/**/*.[jt]s?(x)',
     '<rootDir>/src/**/*(*.)@(spec|test).[jt]s?(x)',
   ],
+  testResultsProcessor: 'jest-sonar-reporter',
+  reporters: [
+    'default',
+    [
+      'jest-sonar',
+      {
+        outputDirectory: 'reports',
+        outputName: 'sonarqube_report.xml',
+        reportedFilePath: 'absolute'
+      }
+    ]
+  ]
 };

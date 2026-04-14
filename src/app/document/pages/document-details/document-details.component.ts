@@ -29,7 +29,6 @@ import {
 @Component({
   selector: 'app-document-details',
   templateUrl: './document-details.component.html',
-  styleUrls: ['./document-details.component.scss'],
 })
 export class DocumentDetailsComponent implements OnInit, OnDestroy {
   viewModel$: Observable<DocumentDetailsViewModel>;

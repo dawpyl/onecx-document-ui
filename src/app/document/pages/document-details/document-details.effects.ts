@@ -361,7 +361,10 @@ export class DocumentDetailsEffects {
           )
           .pipe(
             map((dialogResult) => {
-              if (dialogResult?.button !== 'primary' || !dialogResult?.result) {
+              if (dialogResult?.button !== 'primary') {
+                return DocumentDetailsActions.retryFileUploadCanceled();
+              }
+              if (!dialogResult.result) {
                 return DocumentDetailsActions.retryFileUploadCanceled();
               }
               const fileToUpload = dialogResult.result;

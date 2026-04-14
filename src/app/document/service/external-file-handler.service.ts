@@ -8,7 +8,7 @@ import { AttachmentPresignedUrlResponse } from 'src/app/shared/generated';
   providedIn: 'root',
 })
 export class ExternalFileHandlerService {
-  private httpClient: HttpClient;
+  private readonly httpClient: HttpClient;
 
   constructor(private readonly handler: HttpBackend) {
     this.httpClient = new HttpClient(this.handler);
